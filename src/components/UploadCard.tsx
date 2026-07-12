@@ -101,15 +101,30 @@ export default function UploadCard() {
       setLoading(false);
     }
   }
+  function handleNewFile() {
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setOcrText("");
+    setProgress(0);
+    setLoading(false);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+      fileInputRef.current.click();
+    }
+  }
 
   return (
     <div class="w-full max-w-3xl rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur">
       <div
-        class={`cursor-pointer rounded-2xl border-2 border-dashed p-10 transition-all duration-300 ${
-          dragActive
+        class={`cursor-pointer rounded-2xl border-2 border-dashed p-10 transition-all duration-300 ${dragActive
             ? "border-violet-500 bg-violet-500/10"
             : "border-white/20 hover:border-violet-400 hover:bg-white/5"
-        }`}
+          }`}
         onClick={handleBrowseClick}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -147,7 +162,7 @@ export default function UploadCard() {
       )}
 
       {selectedFile && (
-        <div class="mt-6 flex justify-center">
+        <div class="mt-6 flex flex-wrap justify-center gap-3">
           <button
             onClick={handleRecognize}
             disabled={loading}
@@ -155,8 +170,17 @@ export default function UploadCard() {
           >
             {loading ? "Recognizing..." : "Extract Text"}
           </button>
+          <button
+            type="button"
+            onClick={handleNewFile}
+            disabled={loading}
+            class="rounded-xl border border-zinc-700 px-6 py-3 font-medium text-white transition hover:border-violet-500 hover:bg-violet-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            New File
+          </button>
         </div>
       )}
+
 
       {loading && (
         <div class="mt-6">
