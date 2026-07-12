@@ -192,7 +192,21 @@ export default function UploadCard() {
 
 
       {loading && (
-        <div class="mt-6">
+        <div class="mt-6 rounded-2xl border border-violet-500/30 bg-violet-500/5 p-6">
+          <div class="mb-4 flex items-center gap-3">
+            <span class="h-5 w-5 animate-spin rounded-full border-2 border-violet-300/30 border-t-violet-400" />
+
+            <div>
+              <p class="font-medium text-violet-300">
+                Processing OCR...
+              </p>
+
+              <p class="text-sm text-zinc-400">
+                Please wait while Hayvex extracts text from your image.
+              </p>
+            </div>
+          </div>
+
           <ProgressBar progress={progress} />
         </div>
       )}
