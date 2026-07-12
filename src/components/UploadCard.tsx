@@ -122,8 +122,8 @@ export default function UploadCard() {
     <div class="w-full max-w-3xl rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur">
       <div
         class={`cursor-pointer rounded-2xl border-2 border-dashed p-10 transition-all duration-300 ${dragActive
-            ? "border-violet-500 bg-violet-500/10"
-            : "border-white/20 hover:border-violet-400 hover:bg-white/5"
+          ? "border-violet-500 bg-violet-500/10"
+          : "border-white/20 hover:border-violet-400 hover:bg-white/5"
           }`}
         onClick={handleBrowseClick}
         onDragOver={handleDragOver}
@@ -164,11 +164,20 @@ export default function UploadCard() {
       {selectedFile && (
         <div class="mt-6 flex flex-wrap justify-center gap-3">
           <button
+            type="button"
             onClick={handleRecognize}
             disabled={loading}
             class="rounded-xl bg-violet-600 px-6 py-3 font-medium text-white transition hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {loading ? "Recognizing..." : "Extract Text"}
+            <span class="flex items-center gap-2">
+              {loading && (
+                <span class="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+              )}
+
+              <span>
+                {loading ? "Recognizing..." : "Extract Text"}
+              </span>
+            </span>
           </button>
           <button
             type="button"
