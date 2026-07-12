@@ -1,3 +1,4 @@
+import { renderPdfPageToImage } from "../lib/pdf";
 import { useRef, useState } from "preact/hooks";
 import ImagePreview from "./ImagePreview";
 import ProgressBar from "./ProgressBar";
