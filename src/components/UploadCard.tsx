@@ -1,147 +1,174 @@
-import { useEffect, useRef, useState } from "preact/hooks";
-
-const ACCEPTED_TYPES = [
-  "image/png",
-  "image/jpeg",
-  "image/jpg",
-  "application/pdf",
-];
+import { useRef, useState } from "preact/hooks";
+import ImagePreview from "./ImagePreview";
+import ProgressBar from "./ProgressBar";
+import OCRResult from "./OCRResult";
+import { recognizeText } from "../lib/tesseract";
 
 export default function UploadCard() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [error, setError] = useState("");
 
-  function processFile(file: File) {
-    if (!ACCEPTED_TYPES.includes(file.type)) {
-      setError("Only PNG, JPG, JPEG and PDF files are supported.");
-      setSelectedFile(null);
-      setPreviewUrl(null);
-      return;
+  const [dragActive, setDragActive] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [ocrText, setOcrText] = useState("");
+
+  const MAX_SIZE = 10 * 1024 * 1024;
+
+  function validateFile(file: File) {
+    if (!file.type.startsWith("image/")) {
+      alert("Please upload an image file.");
+      return false;
     }
 
-    setError("");
+    if (file.size > MAX_SIZE) {
+      alert("Image size must be under 10MB.");
+      return false;
+    }
+
+    return true;
+  }
+
+  function handleFile(file: File) {
+    if (!validateFile(file)) return;
+
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
+    const url = URL.createObjectURL(file);
+
     setSelectedFile(file);
+    setPreviewUrl(url);
 
-    if (file.type.startsWith("image/")) {
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
-    } else {
-      setPreviewUrl(null);
+    setOcrText("");
+    setProgress(0);
+  }
+
+  function handleBrowseClick() {
+    fileInputRef.current?.click();
+  }
+
+  function handleInputChange(e: Event) {
+    const input = e.target as HTMLInputElement;
+
+    if (!input.files?.length) return;
+
+    handleFile(input.files[0]);
+  }
+
+  function handleDragOver(e: DragEvent) {
+    e.preventDefault();
+    setDragActive(true);
+  }
+
+  function handleDragLeave(e: DragEvent) {
+    e.preventDefault();
+    setDragActive(false);
+  }
+
+  function handleDrop(e: DragEvent) {
+    e.preventDefault();
+    setDragActive(false);
+
+    const file = e.dataTransfer?.files?.[0];
+
+    if (file) {
+      handleFile(file);
     }
   }
 
-  function handleFileChange(event: Event) {
-    const input = event.target as HTMLInputElement;
+  async function handleRecognize() {
+    if (!selectedFile || loading) return;
 
-    if (!input.files || input.files.length === 0) return;
+    setLoading(true);
+    setProgress(0);
+    setOcrText("");
 
-    processFile(input.files[0]);
+    try {
+      const text = await recognizeText(selectedFile, (value) => {
+        setProgress(value);
+      });
+
+      setOcrText(text);
+    } catch (error) {
+      console.error(error);
+      alert("OCR failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
-
-  function handleDragOver(event: DragEvent) {
-    event.preventDefault();
-    setIsDragging(true);
-  }
-
-  function handleDragLeave(event: DragEvent) {
-    event.preventDefault();
-    setIsDragging(false);
-  }
-
-  function handleDrop(event: DragEvent) {
-    event.preventDefault();
-    setIsDragging(false);
-
-    if (!event.dataTransfer?.files.length) return;
-
-    processFile(event.dataTransfer.files[0]);
-  }
-
-  useEffect(() => {
-    return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-    };
-  }, [previewUrl]);
-
-  useEffect(() => {
-    const preventWindowDrop = (event: DragEvent) => {
-      event.preventDefault();
-    };
-
-    window.addEventListener("dragover", preventWindowDrop);
-    window.addEventListener("drop", preventWindowDrop);
-
-    return () => {
-      window.removeEventListener("dragover", preventWindowDrop);
-      window.removeEventListener("drop", preventWindowDrop);
-    };
-  }, []);
 
   return (
-    <section
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-      className={`w-full max-w-xl rounded-2xl border-2 border-dashed bg-zinc-900/60 p-10 transition
-      ${
-        isDragging
-          ? "border-violet-500 bg-violet-500/10"
-          : "border-zinc-700 hover:border-violet-500"
-      }`}
-    >
-      <div className="flex flex-col items-center">
-        <div className="text-5xl">📄</div>
-
-        <h3 className="mt-4 text-2xl font-semibold">
-          Drag & Drop your file
-        </h3>
-
-        <p className="mt-2 text-sm text-zinc-400">
-          PNG • JPG • JPEG • PDF
-        </p>
-
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          className="mt-6 rounded-xl bg-violet-600 px-6 py-3 font-semibold text-white transition hover:bg-violet-500"
-        >
-          Select Image or PDF
-        </button>
-
+    <div class="w-full max-w-3xl rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur">
+      <div
+        class={`cursor-pointer rounded-2xl border-2 border-dashed p-10 transition-all duration-300 ${
+          dragActive
+            ? "border-violet-500 bg-violet-500/10"
+            : "border-white/20 hover:border-violet-400 hover:bg-white/5"
+        }`}
+        onClick={handleBrowseClick}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*,.pdf"
-          className="hidden"
-          onChange={handleFileChange}
+          accept="image/*"
+          class="hidden"
+          onChange={handleInputChange}
         />
 
-        {error && (
-          <p className="mt-5 text-sm text-red-400">
-            {error}
-          </p>
-        )}
+        <div class="space-y-3 text-center">
+          <div class="text-5xl">📄</div>
 
-        {selectedFile && (
-          <p className="mt-6 text-sm text-emerald-400">
-            Selected: {selectedFile.name}
-          </p>
-        )}
+          <h3 class="text-xl font-semibold text-white">
+            Upload an Image
+          </h3>
 
-        {previewUrl && (
-          <img
-            src={previewUrl}
-            alt="Selected preview"
-            className="mt-6 max-h-72 w-full rounded-xl border border-zinc-700 object-contain"
-          />
-        )}
+          <p class="text-sm text-zinc-400">
+            Drag & Drop or Click to Browse
+          </p>
+
+          <p class="text-xs text-zinc-500">
+            JPG • PNG • WEBP • Max 10MB
+          </p>
+        </div>
       </div>
-    </section>
+
+      {previewUrl && (
+        <div class="mt-8">
+          <ImagePreview src={previewUrl} />
+        </div>
+      )}
+
+      {selectedFile && (
+        <div class="mt-6 flex justify-center">
+          <button
+            onClick={handleRecognize}
+            disabled={loading}
+            class="rounded-xl bg-violet-600 px-6 py-3 font-medium text-white transition hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {loading ? "Recognizing..." : "Extract Text"}
+          </button>
+        </div>
+      )}
+
+      {loading && (
+        <div class="mt-6">
+          <ProgressBar progress={progress} />
+        </div>
+      )}
+
+      {ocrText && (
+        <div class="mt-8">
+          <OCRResult text={ocrText} />
+        </div>
+      )}
+    </div>
   );
 }
