@@ -20,33 +20,55 @@ export default function UploadCard() {
   const MAX_SIZE = 10 * 1024 * 1024;
 
   function validateFile(file: File) {
-    if (!file.type.startsWith("image/")) {
-      alert("Please upload an image file.");
+    const isImage = file.type.startsWith("image/");
+    const isPdf = file.type === "application/pdf";
+
+    if (!isImage && !isPdf) {
+      alert("Please upload an image or PDF.");
       return false;
     }
 
     if (file.size > MAX_SIZE) {
-      alert("Image size must be under 10MB.");
+      alert("File size must be under 10MB.");
       return false;
     }
 
     return true;
   }
 
-  function handleFile(file: File) {
+  async function handleFile(file: File) {
     if (!validateFile(file)) return;
 
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
     }
 
-    const url = URL.createObjectURL(file);
-
-    setSelectedFile(file);
-    setPreviewUrl(url);
-
     setOcrText("");
     setProgress(0);
+
+    // PDF Preview
+    if (file.type === "application/pdf") {
+      try {
+        const imageBlob = await renderPdfPageToImage(file);
+
+        const imageUrl = URL.createObjectURL(imageBlob);
+
+        setSelectedFile(file);
+        setPreviewUrl(imageUrl);
+
+        return;
+      } catch (error) {
+        console.error(error);
+        alert("Unable to render PDF.");
+        return;
+      }
+    }
+
+    // Image Preview
+    const imageUrl = URL.createObjectURL(file);
+
+    setSelectedFile(file);
+    setPreviewUrl(imageUrl);
   }
 
   function handleBrowseClick() {
@@ -58,7 +80,7 @@ export default function UploadCard() {
 
     if (!input.files?.length) return;
 
-    handleFile(input.files[0]);
+    void handleFile(input.files[0]);
   }
 
   function handleDragOver(e: DragEvent) {
@@ -78,7 +100,7 @@ export default function UploadCard() {
     const file = e.dataTransfer?.files?.[0];
 
     if (file) {
-      handleFile(file);
+      void handleFile(file);
     }
   }
 
@@ -90,7 +112,15 @@ export default function UploadCard() {
     setOcrText("");
 
     try {
-      const text = await recognizeText(selectedFile, (value) => {
+      let input: File | Blob = selectedFile;
+
+      // If uploaded file is a PDF,
+      // convert first page to image before OCR.
+      if (selectedFile.type === "application/pdf") {
+        input = await renderPdfPageToImage(selectedFile);
+      }
+
+      const text = await recognizeText(input, (value) => {
         setProgress(value);
       });
 
@@ -134,7 +164,7 @@ export default function UploadCard() {
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept="image/*,.pdf"
           class="hidden"
           onChange={handleInputChange}
         />
@@ -143,7 +173,7 @@ export default function UploadCard() {
           <div class="text-5xl">📄</div>
 
           <h3 class="text-xl font-semibold text-white">
-            Upload an Image
+            Upload an Image or PDF
           </h3>
 
           <p class="text-sm text-zinc-400">
@@ -151,7 +181,7 @@ export default function UploadCard() {
           </p>
 
           <p class="text-xs text-zinc-500">
-            JPG • PNG • WEBP • Max 10MB
+            JPG • PNG • WEBP • PDF • Max 10MB
           </p>
         </div>
       </div>
