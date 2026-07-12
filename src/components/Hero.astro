@@ -1,0 +1,23 @@
+---
+import UploadCard from "./UploadCard";
+---
+
+<section class="flex min-h-screen flex-col items-center justify-center bg-[#09090B] px-6 pt-24 text-center text-white">
+
+  <h1 class="max-w-4xl text-5xl font-bold leading-tight md:text-7xl">
+    Extract Text from Images & PDFs
+  </h1>
+
+  <p class="mt-6 max-w-2xl text-lg text-zinc-400">
+    Privacy-first AI Document Intelligence Platform.
+  </p>
+
+  <p class="mt-4 font-medium text-emerald-400">
+    🔒 Your files never leave your device.
+  </p>
+
+  <div class="mt-12 flex w-full justify-center">
+    <UploadCard client:load />
+  </div>
+
+</section>
