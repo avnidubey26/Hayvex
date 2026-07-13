@@ -1,0 +1,131 @@
+---
+const features = [
+  {
+    icon: "⚡",
+    title: "Browser OCR",
+    description:
+      "Extract text instantly using high-performance OCR that runs entirely inside your browser. No installation or server processing required.",
+  },
+  {
+    icon: "🔒",
+    title: "Privacy First",
+    description:
+      "Your documents never leave your device. Every file is processed locally, keeping your personal and sensitive data completely private.",
+  },
+  {
+    icon: "📄",
+    title: "PDF OCR",
+    description:
+      "Automatically recognize text from single-page and multi-page PDF documents while preserving the correct reading order.",
+  },
+  {
+    icon: "🖼️",
+    title: "Image OCR",
+    description:
+      "Supports JPG, PNG, JPEG and WEBP images, including scanned documents, screenshots and printed text.",
+  },
+  {
+    icon: "⬇️",
+    title: "Export Results",
+    description:
+      "Copy extracted text with one click or download it instantly as a clean TXT file for future use.",
+  },
+  {
+    icon: "💻",
+    title: "Works Everywhere",
+    description:
+      "Compatible with Chrome, Edge, Firefox and Safari. No software installation or account creation required.",
+  },
+];
+---
+
+<section
+  id="features"
+  class="mx-auto max-w-6xl px-6 py-24 lg:px-8"
+>
+  <!-- Heading -->
+
+  <div class="mx-auto max-w-3xl text-center">
+    <span
+      class="inline-flex rounded-full border border-violet-500/30 bg-violet-500/10 px-5 py-2 text-sm font-medium text-violet-300"
+    >
+      Why Hayvex?
+    </span>
+
+    <h2
+      class="mt-6 text-4xl font-bold tracking-tight text-white md:text-5xl"
+    >
+      Built for
+      <span
+        class="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent"
+      >
+        Speed
+      </span>
+      &
+      Privacy
+    </h2>
+
+    <p
+      class="mt-6 text-lg leading-8 text-zinc-400"
+    >
+      Everything runs directly inside your browser.
+      No uploads. No waiting. Fast and privacy-first OCR.
+    </p>
+  </div>
+
+  <!-- Features -->
+
+  <div
+    class="mt-20 grid gap-x-16 gap-y-12 md:grid-cols-2"
+  >
+    {
+      features.map((feature) => (
+        <div class="flex items-start gap-4">
+          <div
+            class="mt-1 flex h-11 w-11 items-center justify-center rounded-xl bg-white/5 text-2xl"
+          >
+            {feature.icon}
+          </div>
+
+          <div>
+            <h3
+              class="text-xl font-semibold tracking-tight text-white"
+            >
+              {feature.title}
+            </h3>
+
+            <p
+              class="mt-2 max-w-sm text-[15px] leading-7 text-zinc-400"
+            >
+              {feature.description}
+            </p>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- Bottom Line -->
+
+  <div
+    class="mt-20 border-t border-white/10 pt-8"
+  >
+    <div
+      class="flex flex-wrap items-center justify-center gap-3 text-sm text-zinc-500"
+    >
+      <span>No Signup</span>
+
+      <span>•</span>
+
+      <span>100% Browser Based</span>
+
+      <span>•</span>
+
+      <span>No Cloud Uploads</span>
+
+      <span>•</span>
+
+      <span>Free OCR</span>
+    </div>
+  </div>
+</section>

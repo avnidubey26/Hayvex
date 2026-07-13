@@ -2,12 +2,24 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Navbar from "../components/Navbar.astro";
 import Hero from "../components/Hero.astro";
+import Features from "../components/Features.astro";
+import Footer from "../components/Footer.astro";
 ---
 
 <BaseLayout
-	title="Hayvex - AI Document Intelligence"
-	description="Privacy-first AI Document Intelligence platform. Your files never leave your device."
+  title="Hayvex - AI Document Intelligence"
+  description="Privacy-first AI Document Intelligence platform. Your files never leave your device."
 >
-	<Navbar />
-	<Hero />
+  <Navbar />
+
+  <main class="bg-[#09090B] text-white">
+
+    <Hero />
+
+    <Features />
+
+	<Footer />
+
+  </main>
+
 </BaseLayout>
