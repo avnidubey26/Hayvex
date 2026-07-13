@@ -171,11 +171,11 @@ export default function UploadCard() {
   }
 
   return (
-    <div class="w-full max-w-3xl rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur">
+    <div class="mx-auto w-full max-w-4xl rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl">
       <div
-        class={`cursor-pointer rounded-2xl border-2 border-dashed p-10 transition-all duration-300 ${dragActive
-          ? "border-violet-500 bg-violet-500/10"
-          : "border-white/20 hover:border-violet-400 hover:bg-white/5"
+        class={`group cursor-pointer rounded-3xl border-2 border-dashed py-8 px-8 transition-all duration-300 ${dragActive
+            ? "border-violet-500 bg-violet-500/10 shadow-[0_0_40px_rgba(139,92,246,.25)]"
+            : "border-white/20 hover:border-violet-400 hover:bg-white/5"
           }`}
         onClick={openFilePicker}
         onDragOver={handleDragOver}
@@ -190,10 +190,12 @@ export default function UploadCard() {
           onChange={handleInputChange}
         />
 
-        <div class="space-y-3 text-center">
-          <div class="text-5xl">📄</div>
+        <div class="space-y-4 text-center">
+          <div class="text-4xl transition-transform duration-300 group-hover:scale-110">
+            📄
+          </div>
 
-          <h2 class="text-xl font-semibold text-white">
+          <h2 class="text-xl font-bold tracking-tight text-white">
             Upload Image or PDF
           </h2>
 
@@ -201,25 +203,25 @@ export default function UploadCard() {
             Drag & Drop or Click to Browse
           </p>
 
-          <p class="text-xs text-zinc-500">
+          <p class="text-sm text-zinc-500">
             Images ≤ 10MB • PDFs ≤ 100MB
           </p>
         </div>
       </div>
 
       {previewUrl && (
-        <div class="mt-8">
+        <div class="mt-6">
           <ImagePreview src={previewUrl} />
         </div>
       )}
 
       {selectedFile && (
-        <div class="mt-6 flex flex-wrap justify-center gap-4">
+        <div class="mt-5 flex flex-wrap justify-center gap-3">
           <button
             type="button"
             onClick={handleOCR}
             disabled={loading}
-            class="rounded-xl bg-violet-600 px-6 py-3 font-medium text-white transition hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-50"
+            class="rounded-xl bg-violet-600 px-5 py-2.5 font-medium text-white transition hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? "Processing..." : "Extract Text"}
           </button>
@@ -228,7 +230,7 @@ export default function UploadCard() {
             type="button"
             onClick={resetState}
             disabled={loading}
-            class="rounded-xl border border-white/20 px-6 py-3 font-medium text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
+            class="rounded-xl border border-white/20 px-5 py-2.5 font-medium text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
           >
             New File
           </button>
@@ -236,13 +238,13 @@ export default function UploadCard() {
       )}
 
       {loading && (
-        <div class="mt-6">
+        <div class="mt-5">
           <ProgressBar progress={progress} />
         </div>
       )}
 
       {ocrText && (
-        <div class="mt-8">
+        <div class="mt-6">
           <OCRResult text={ocrText} />
         </div>
       )}
