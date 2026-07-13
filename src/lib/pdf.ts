@@ -12,21 +12,19 @@ GlobalWorkerOptions.workerSrc = new URL(
 export async function loadPdf(file: File): Promise<PDFDocumentProxy> {
   const buffer = await file.arrayBuffer();
 
-  return await getDocument({
+  return getDocument({
     data: buffer,
   }).promise;
 }
 
-export async function renderPdfPageToImage(
-  file: File,
-  pageNumber = 1,
+async function renderPage(
+  pdf: PDFDocumentProxy,
+  pageNumber: number,
 ): Promise<Blob> {
-  const pdf = await loadPdf(file);
-
   const page = await pdf.getPage(pageNumber);
 
   const viewport = page.getViewport({
-    scale: 2,
+    scale: 3,
   });
 
   const canvas = document.createElement("canvas");
@@ -55,4 +53,27 @@ export async function renderPdfPageToImage(
       resolve(blob);
     }, "image/png");
   });
+}
+
+export async function renderPdfPageToImage(
+  file: File,
+  pageNumber = 1,
+): Promise<Blob> {
+  const pdf = await loadPdf(file);
+
+  return renderPage(pdf, pageNumber);
+}
+
+export async function renderAllPdfPages(
+  file: File,
+): Promise<Blob[]> {
+  const pdf = await loadPdf(file);
+
+  const pages: Blob[] = [];
+
+  for (let page = 1; page <= pdf.numPages; page++) {
+    pages.push(await renderPage(pdf, page));
+  }
+
+  return pages;
 }
