@@ -1,12 +1,11 @@
 import { useState } from "preact/hooks";
+import { Copy, Download, FileText, Check } from "lucide-preact";
 
 type OCRResultProps = {
   text: string;
 };
 
-export default function OCRResult({
-  text,
-}: OCRResultProps) {
+export default function OCRResult({ text }: OCRResultProps) {
   const [copied, setCopied] = useState(false);
 
   if (!text.trim()) {
@@ -23,7 +22,7 @@ export default function OCRResult({
         setCopied(false);
       }, 2000);
     } catch (error) {
-      console.error("Failed to copy text:", error);
+      console.error(error);
     }
   }
 
@@ -49,34 +48,70 @@ export default function OCRResult({
   }
 
   return (
-    <section className="mt-8 w-full rounded-2xl border border-zinc-700 bg-zinc-900/70 p-6">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <h3 className="text-xl font-semibold text-white">
-          Extracted Text
-        </h3>
+    <section class="mt-8 w-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-xl backdrop-blur-xl">
 
-        <div className="flex gap-2">
+      {/* Header */}
+
+      <div class="flex flex-col gap-4 border-b border-white/10 p-6 md:flex-row md:items-center md:justify-between">
+
+        <div class="flex items-center gap-3">
+
+          <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-500/10 text-violet-400">
+
+            <FileText size={22} />
+
+          </div>
+
+          <div>
+
+            <h3 class="text-lg font-semibold text-white">
+              Extracted Text
+            </h3>
+
+            <p class="text-sm text-zinc-500">
+              Review, copy or download your OCR result.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="flex gap-3">
+
           <button
             type="button"
             onClick={handleCopy}
-            className="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-500"
+            class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
           >
-            {copied ? "Copied!" : "Copy"}
+            {copied ? <Check size={18} /> : <Copy size={18} />}
+
+            {copied ? "Copied" : "Copy"}
           </button>
 
           <button
             type="button"
             onClick={handleDownload}
-            className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-500"
+            class="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-500"
           >
+            <Download size={18} />
+
             Download TXT
           </button>
+
         </div>
+
       </div>
 
-      <pre className="max-h-96 overflow-auto whitespace-pre-wrap break-words rounded-lg bg-zinc-950 p-4 text-sm leading-7 text-zinc-300">
-        {text}
-      </pre>
+      {/* Result */}
+
+      <div class="p-6">
+
+        <pre class="max-h-[450px] overflow-auto whitespace-pre-wrap break-words rounded-2xl border border-white/10 bg-[#07070A] p-5 text-sm leading-7 text-zinc-300">
+{text}
+        </pre>
+
+      </div>
+
     </section>
   );
 }

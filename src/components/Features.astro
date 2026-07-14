@@ -4,128 +4,97 @@ const features = [
     icon: "⚡",
     title: "Browser OCR",
     description:
-      "Extract text instantly using high-performance OCR that runs entirely inside your browser. No installation or server processing required.",
+      "Fast OCR directly inside your browser. No servers. No installation.",
   },
   {
     icon: "🔒",
     title: "Privacy First",
-    description:
-      "Your documents never leave your device. Every file is processed locally, keeping your personal and sensitive data completely private.",
+    description: "Every document stays on your device. Nothing is uploaded.",
   },
   {
     icon: "📄",
     title: "PDF OCR",
     description:
-      "Automatically recognize text from single-page and multi-page PDF documents while preserving the correct reading order.",
+      "Extract text from single and multi-page PDF documents instantly.",
   },
   {
     icon: "🖼️",
     title: "Image OCR",
     description:
-      "Supports JPG, PNG, JPEG and WEBP images, including scanned documents, screenshots and printed text.",
+      "Supports JPG, PNG, JPEG and WEBP with high recognition accuracy.",
   },
   {
     icon: "⬇️",
     title: "Export Results",
-    description:
-      "Copy extracted text with one click or download it instantly as a clean TXT file for future use.",
+    description: "Copy extracted text or download it as a clean TXT file.",
   },
   {
     icon: "💻",
-    title: "Works Everywhere",
+    title: "Cross Platform",
     description:
-      "Compatible with Chrome, Edge, Firefox and Safari. No software installation or account creation required.",
+      "Works in Chrome, Edge, Firefox and Safari without installation.",
   },
 ];
 ---
 
-<section
-  id="features"
-  class="mx-auto max-w-6xl px-6 py-24 lg:px-8"
->
-  <!-- Heading -->
-
-  <div class="mx-auto max-w-3xl text-center">
+<section id="features" class="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+  <div class="mx-auto max-w-2xl text-center">
     <span
-      class="inline-flex rounded-full border border-violet-500/30 bg-violet-500/10 px-5 py-2 text-sm font-medium text-violet-300"
+      class="inline-flex rounded-full border border-[#D4AF37]/25 bg-[#D4AF37]/10 px-4 py-1.5 text-xs font-medium tracking-wide text-[#F4D56A]"
     >
-      Why Hayvex?
+      WHY HAYVEX
     </span>
 
-    <h2
-      class="mt-6 text-4xl font-bold tracking-tight text-white md:text-5xl"
-    >
-      Built for
+    <h2 class="mt-5 text-3xl font-bold tracking-tight text-white md:text-4xl">
+      Built for{" "}
       <span
-        class="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent"
+        class="bg-gradient-to-r from-[#FFE89B] via-[#D4AF37] to-[#A97A14] bg-clip-text text-transparent"
       >
         Speed
       </span>
-      &
-      Privacy
+      {" "} & Privacy
     </h2>
 
-    <p
-      class="mt-6 text-lg leading-8 text-zinc-400"
-    >
-      Everything runs directly inside your browser.
-      No uploads. No waiting. Fast and privacy-first OCR.
+    <p class="mx-auto mt-4 max-w-xl text-base leading-7 text-zinc-400">
+      Fast, browser-based OCR with complete privacy and zero cloud uploads.
     </p>
   </div>
 
-  <!-- Features -->
-
-  <div
-    class="mt-20 grid gap-x-16 gap-y-12 md:grid-cols-2"
-  >
+  <div class="mt-12 grid gap-x-10 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
     {
       features.map((feature) => (
-        <div class="flex items-start gap-4">
-          <div
-            class="mt-1 flex h-11 w-11 items-center justify-center rounded-xl bg-white/5 text-2xl"
-          >
+        <div class="rounded-2xl border border-white/8 bg-white/[0.025] p-5 transition duration-300 hover:border-[#D4AF37]/30 hover:bg-white/[0.04]">
+          <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#D4AF37]/10 text-xl">
             {feature.icon}
           </div>
 
-          <div>
-            <h3
-              class="text-xl font-semibold tracking-tight text-white"
-            >
-              {feature.title}
-            </h3>
+          <h3 class="mt-4 text-lg font-semibold text-white">{feature.title}</h3>
 
-            <p
-              class="mt-2 max-w-sm text-[15px] leading-7 text-zinc-400"
-            >
-              {feature.description}
-            </p>
-          </div>
+          <p class="mt-2 text-sm leading-6 text-zinc-400">
+            {feature.description}
+          </p>
         </div>
       ))
     }
   </div>
 
-  <!-- Bottom Line -->
-
-  <div
-    class="mt-20 border-t border-white/10 pt-8"
-  >
+  <div class="mt-12 border-t border-white/10 pt-6">
     <div
-      class="flex flex-wrap items-center justify-center gap-3 text-sm text-zinc-500"
+      class="flex flex-wrap justify-center gap-3 text-xs uppercase tracking-wide text-zinc-500"
     >
       <span>No Signup</span>
 
       <span>•</span>
 
-      <span>100% Browser Based</span>
+      <span>Browser Based</span>
 
       <span>•</span>
 
-      <span>No Cloud Uploads</span>
+      <span>Private OCR</span>
 
       <span>•</span>
 
-      <span>Free OCR</span>
+      <span>Free</span>
     </div>
   </div>
 </section>

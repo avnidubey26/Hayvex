@@ -1,7 +1,10 @@
 import { useRef, useState } from "preact/hooks";
+import { Upload, FileImage } from "lucide-preact";
+
 import ImagePreview from "./ImagePreview";
 import ProgressBar from "./ProgressBar";
 import OCRResult from "./OCRResult";
+
 import { recognizeText } from "../lib/tesseract";
 
 import {
@@ -72,21 +75,18 @@ export default function UploadCard() {
     }
 
     setSelectedFile(file);
+    setPreviewUrl(null);
     setOcrText("");
     setProgress(0);
 
-    // Image Preview
     if (file.type.startsWith("image/")) {
       setPreviewUrl(URL.createObjectURL(file));
       return;
     }
 
-    // PDF Preview (First Page)
     try {
       const firstPage = await renderPdfPageToImage(file, 1);
-
       const preview = URL.createObjectURL(firstPage);
-
       setPreviewUrl(preview);
     } catch (error) {
       console.error(error);
@@ -94,6 +94,7 @@ export default function UploadCard() {
       resetState();
     }
   }
+
   function openFilePicker() {
     fileInputRef.current?.click();
   }
@@ -118,6 +119,7 @@ export default function UploadCard() {
 
   function handleDrop(e: DragEvent) {
     e.preventDefault();
+
     setDragActive(false);
 
     const file = e.dataTransfer?.files?.[0];
@@ -135,7 +137,6 @@ export default function UploadCard() {
     setOcrText("");
 
     try {
-      // Image OCR
       if (selectedFile.type.startsWith("image/")) {
         const text = await recognizeText(selectedFile, (value) => {
           setProgress(value);
@@ -143,10 +144,10 @@ export default function UploadCard() {
 
         setProgress(1);
         setOcrText(text);
+
         return;
       }
 
-      // Multi-page PDF OCR
       const pageImages = await renderAllPdfPages(selectedFile);
 
       let finalText = "";
@@ -164,6 +165,7 @@ export default function UploadCard() {
       setOcrText(finalText.trim());
     } catch (error) {
       console.error(error);
+
       alert("OCR failed.");
     } finally {
       setLoading(false);
@@ -171,17 +173,21 @@ export default function UploadCard() {
   }
 
   return (
-    <div class="mx-auto w-full max-w-4xl rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl">
+    <div class="mx-auto w-full max-w-[660px] rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-2xl backdrop-blur-xl">
+
+      {/* Upload Area */}
+
       <div
-        class={`group cursor-pointer rounded-3xl border-2 border-dashed py-8 px-8 transition-all duration-300 ${dragActive
-            ? "border-violet-500 bg-violet-500/10 shadow-[0_0_40px_rgba(139,92,246,.25)]"
-            : "border-white/20 hover:border-violet-400 hover:bg-white/5"
+        class={`group cursor-pointer rounded-xl border-2 border-dashed transition-all duration-300 ${dragActive
+            ? "border-[#D4AF37] bg-[#D4AF37]/10 shadow-[0_0_24px_rgba(212,175,55,.15)]"
+            : "border-white/15 hover:border-[#D4AF37]/60 hover:bg-white/[0.03]"
           }`}
         onClick={openFilePicker}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
+
         <input
           ref={fileInputRef}
           type="file"
@@ -190,64 +196,106 @@ export default function UploadCard() {
           onChange={handleInputChange}
         />
 
-        <div class="space-y-4 text-center">
-          <div class="text-4xl transition-transform duration-300 group-hover:scale-110">
-            📄
+        <div class="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+
+          <div class="flex items-center gap-3.5 text-center sm:text-left">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/10 text-[#D4AF37] transition duration-300 group-hover:scale-105">
+              <Upload size={17} strokeWidth={2.2} />
+            </div>
+
+            <div class="flex flex-col">
+              <h2 class="text-[13px] font-semibold tracking-tight text-white">
+                Upload your document
+              </h2>
+
+              <p class="mt-0.5 text-[11px] leading-5 text-zinc-400">
+                Drag &amp; drop your image or PDF or click to browse.
+              </p>
+            </div>
           </div>
 
-          <h2 class="text-xl font-bold tracking-tight text-white">
-            Upload Image or PDF
-          </h2>
+          <div class="flex shrink-0 flex-wrap items-center justify-center gap-1.5 sm:justify-end">
+            <span class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] text-zinc-300">
+              JPG
+            </span>
 
-          <p class="text-sm text-zinc-400">
-            Drag & Drop or Click to Browse
-          </p>
+            <span class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] text-zinc-300">
+              PNG
+            </span>
 
-          <p class="text-sm text-zinc-500">
-            Images ≤ 10MB • PDFs ≤ 100MB
+            <span class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] text-zinc-300">
+              WEBP
+            </span>
+
+            <span class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] text-zinc-300">
+              PDF
+            </span>
+          </div>
+
+        </div>
+
+        <div class="border-t border-white/[0.06] px-5 py-2 text-center">
+          <p class="text-[10px] tracking-wide text-zinc-500">
+            Images up to 10 MB • PDFs up to 100 MB
           </p>
         </div>
+
       </div>
 
+      {/* Preview */}
+
       {previewUrl && (
-        <div class="mt-6">
+        <div class="mt-3">
           <ImagePreview src={previewUrl} />
         </div>
       )}
 
+      {/* Action Buttons */}
+
       {selectedFile && (
-        <div class="mt-5 flex flex-wrap justify-center gap-3">
+        <div class="mt-3 flex flex-wrap items-center justify-center gap-2">
+
           <button
             type="button"
             onClick={handleOCR}
             disabled={loading}
-            class="rounded-xl bg-violet-600 px-5 py-2.5 font-medium text-white transition hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-50"
+            class="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#D4AF37] to-[#A97A14] px-3.5 py-2 text-[12px] font-medium text-black transition duration-300 hover:scale-[1.02] disabled:opacity-50"
           >
+
+            <FileImage size={14} />
+
             {loading ? "Processing..." : "Extract Text"}
+
           </button>
 
           <button
             type="button"
             onClick={resetState}
             disabled={loading}
-            class="rounded-xl border border-white/20 px-5 py-2.5 font-medium text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
+            class="rounded-lg border border-white/10 bg-white/5 px-3.5 py-2 text-[12px] font-medium text-white transition hover:bg-white/10 disabled:opacity-50"
           >
             New File
           </button>
+
         </div>
       )}
 
+      {/* Progress */}
+
       {loading && (
-        <div class="mt-5">
+        <div class="mt-3">
           <ProgressBar progress={progress} />
         </div>
       )}
 
+      {/* OCR Result */}
+
       {ocrText && (
-        <div class="mt-6">
+        <div class="mt-3">
           <OCRResult text={ocrText} />
         </div>
       )}
+
     </div>
   );
 }

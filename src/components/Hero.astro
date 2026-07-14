@@ -2,106 +2,82 @@
 import UploadCard from "./UploadCard";
 ---
 
-<section
-  class="relative overflow-hidden bg-[#09090B] pt-44 pb-24 text-white"
->
-  <!-- Background Glow -->
+<section class="relative text-white">
+  <!-- Hero-specific accent glow (layered on top of the global BackgroundFX) -->
 
   <div
-    class="absolute left-1/2 top-20 h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-violet-700/10 blur-[180px]"
-  />
-
-  <div
-    class="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-fuchsia-700/10 blur-[180px]"
-  />
-
-  <div
-    class="relative mx-auto flex max-w-7xl flex-col items-center px-6 text-center"
+    class="pointer-events-none absolute left-1/2 top-10 h-[420px] w-[640px] -translate-x-1/2 rounded-full bg-[#D4AF37]/[0.06] blur-[140px]"
   >
-
-    <!-- Badge -->
-
-    <div
-      class="rounded-full border border-violet-500/30 bg-violet-500/10 px-8 py-3 text-lg font-semibold text-violet-200 backdrop-blur"
-    >
-      🚀 AI Document Intelligence Platform
-    </div>
-
-    <!-- Heading -->
-
-    <h1
-      class="mt-10 max-w-5xl text-5xl font-black leading-[1.02] tracking-tight text-white md:text-7xl"
-    >
-      Extract Text from
-
-      <span
-        class="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent"
-      >
-        Images & PDFs
-      </span>
-
-      in Seconds
-    </h1>
-
-    <!-- Description -->
-
-    <p
-      class="mt-8 max-w-3xl text-xl leading-9 text-zinc-400"
-    >
-      Hayvex extracts text directly inside your browser.
-      Your files never leave your device.
-
-      <br />
-
-      Fast, secure and privacy-first OCR for Images and PDFs.
-    </p>
-
-    <!-- Badges -->
-
-    <div
-      class="mt-10 flex flex-wrap justify-center gap-4"
-    >
-
-      <div
-        class="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-6 py-3 font-medium text-emerald-300"
-      >
-        🔒 Privacy First
-      </div>
-
-      <div
-        class="rounded-full border border-violet-500/30 bg-violet-500/10 px-6 py-3 font-medium text-violet-300"
-      >
-        ⚡ Browser OCR
-      </div>
-
-      <div
-        class="rounded-full border border-sky-500/30 bg-sky-500/10 px-6 py-3 font-medium text-sky-300"
-      >
-        📄 Multi-Page PDF
-      </div>
-
-      <div
-        class="rounded-full border border-pink-500/30 bg-pink-500/10 px-6 py-3 font-medium text-pink-300"
-      >
-        🖼️ Image OCR
-      </div>
-
-    </div>
-
-    <!-- Upload Card -->
-
-    <div class="mt-14 flex w-full justify-center">
-      <UploadCard client:load />
-    </div>
-
-    <!-- Bottom Text -->
-
-    <p
-      class="mt-8 text-sm text-zinc-500"
-    >
-      No signup • Browser-based OCR • Your files never leave your device
-    </p>
-
   </div>
 
+  <!-- Content -->
+
+  <div
+    class="relative mx-auto max-w-5xl px-6 pt-20 pb-10 text-center sm:pt-24 lg:px-8 lg:pt-24"
+  >
+    <div class="mx-auto flex flex-col items-center">
+      
+
+      <!-- Heading -->
+
+      <h1
+        class="mt-0 max-w-3xl text-4xl font-black leading-[1.1] tracking-tight text-white sm:text-5xl md:text-[3.25rem] lg:text-6xl"
+      >
+        Extract Text
+        <div
+          class="bg-gradient-to-r from-[#F2D27A] via-[#D4AF37] to-[#B8860B] bg-clip-text text-transparent [filter:drop-shadow(0_0_28px_rgba(212,175,55,0.25))]"
+        >
+           from Anything.
+    </div>
+      </h1>
+
+      <!-- Description -->
+
+      <p class="mt-5 max-w-md text-sm leading-6 text-zinc-400 sm:text-base sm:leading-7">
+        Fast, privacy-first OCR for images and PDFs. Everything runs
+        directly inside your browser.
+      </p>
+
+      <!-- Upload Card -->
+
+      <div id="upload" class="mt-7 w-full max-w-[660px] scroll-mt-24">
+        <UploadCard client:load />
+      </div>
+
+      <!-- Feature Pills -->
+
+      <div class="mt-6 flex flex-wrap justify-center gap-2">
+        <span
+          class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:border-[#D4AF37]/30 hover:text-white"
+        >
+          Privacy First
+        </span>
+
+        <span
+          class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:border-[#D4AF37]/30 hover:text-white"
+        >
+          Browser OCR
+        </span>
+
+        <span
+          class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:border-[#D4AF37]/30 hover:text-white"
+        >
+          PDF OCR
+        </span>
+
+        <span
+          class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:border-[#D4AF37]/30 hover:text-white"
+        >
+          Image OCR
+        </span>
+      </div>
+
+      <!-- Bottom Text -->
+
+      <p class="mt-5 text-[11px] tracking-wide text-zinc-500">
+        No signup required &bull; Browser-based OCR &bull; Files never
+        leave your device
+      </p>
+    </div>
+  </div>
 </section>
