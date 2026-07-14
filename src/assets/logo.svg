@@ -1,0 +1,195 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="980"
+  height="240"
+  viewBox="0 0 980 240"
+  fill="none"
+>
+
+  <defs>
+
+    <linearGradient
+      id="hayvexGradient"
+      x1="20"
+      y1="20"
+      x2="170"
+      y2="180"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="55%" stop-color="#A855F7"/>
+      <stop offset="100%" stop-color="#D4AF37"/>
+    </linearGradient>
+
+    <linearGradient
+      id="scanGradient"
+      x1="0"
+      y1="0"
+      x2="1"
+      y2="0"
+    >
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#D4AF37"/>
+    </linearGradient>
+
+  </defs>
+
+  <!-- ========================= -->
+  <!-- ICON GROUP -->
+  <!-- ========================= -->
+
+  <g transform="translate(20 20)">
+
+    <!-- AI Scan Lines -->
+
+    <rect
+      x="0"
+      y="54"
+      width="46"
+      height="6"
+      rx="3"
+      fill="url(#scanGradient)"
+      opacity=".95"
+    />
+
+    <rect
+      x="10"
+      y="74"
+      width="36"
+      height="6"
+      rx="3"
+      fill="url(#scanGradient)"
+      opacity=".9"
+    />
+
+    <rect
+      x="0"
+      y="94"
+      width="52"
+      height="6"
+      rx="3"
+      fill="url(#scanGradient)"
+      opacity=".82"
+    />
+
+    <rect
+      x="14"
+      y="114"
+      width="38"
+      height="6"
+      rx="3"
+      fill="url(#scanGradient)"
+      opacity=".72"
+    />
+
+    <!-- Document -->
+
+    <path
+      d="
+      M78 18
+      H146
+      L182 54
+      V164
+      C182 175 174 184 162 184
+      H78
+      C66 184 58 175 58 164
+      V38
+      C58 26 66 18 78 18
+      Z
+      "
+      fill="url(#hayvexGradient)"
+    />
+
+    <!-- Fold -->
+
+    <path
+      d="
+      M146 18
+      V54
+      H182
+      "
+      fill="#FFFFFF"
+      opacity=".18"
+    />
+        <!-- H -->
+
+    <path
+      d="
+      M88 56
+      V148
+      "
+      stroke="#FFFFFF"
+      stroke-width="16"
+      stroke-linecap="round"
+    />
+
+    <path
+      d="
+      M152 56
+      V148
+      "
+      stroke="#FFFFFF"
+      stroke-width="16"
+      stroke-linecap="round"
+    />
+
+    <path
+      d="
+      M88 102
+      H152
+      "
+      stroke="#FFFFFF"
+      stroke-width="16"
+      stroke-linecap="round"
+    />
+
+    <!-- Small AI Accent -->
+
+    <circle
+      cx="171"
+      cy="42"
+      r="3.5"
+      fill="#FFD54A"
+    />
+
+    <circle
+      cx="164"
+      cy="34"
+      r="2"
+      fill="#8B5CF6"
+      opacity=".9"
+    />
+
+  </g>
+
+  <!-- ========================= -->
+  <!-- WORDMARK -->
+  <!-- ========================= -->
+
+  <g transform="translate(245 78)">
+
+    <text
+      x="0"
+      y="0"
+      fill="#FFFFFF"
+      font-size="68"
+      font-family="Inter, Poppins, Arial, sans-serif"
+      font-weight="700"
+      letter-spacing="-2"
+    >
+      Hayvex
+    </text>
+
+    <text
+      x="2"
+      y="42"
+      fill="#9CA3AF"
+      font-size="18"
+      font-family="Inter, Arial, sans-serif"
+      font-weight="500"
+      letter-spacing="3"
+    >
+      AI DOCUMENT INTELLIGENCE
+    </text>
+
+  </g>

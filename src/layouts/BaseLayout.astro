@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import BackgroundFX from "../components/BackgroundFX.astro";
 
 interface Props {
   title: string;
@@ -8,49 +9,125 @@ interface Props {
 
 const {
   title,
-  description = "Privacy-first AI Document Intelligence platform.",
+  description = "Hayvex is a privacy-first AI OCR platform that extracts text from images and PDFs directly in your browser.",
 } = Astro.props;
+
+const siteUrl = "https://vaikva.com";
+const ogImage = "/og-image.png";
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>{title}</title>
 
     <meta name="description" content={description} />
+
+    <meta
+      name="keywords"
+      content="OCR, Image OCR, PDF OCR, AI OCR, Hayvex, Vaikva"
+    />
+
+    <meta name="theme-color" content="#050505" />
+
+    <link rel="icon" href="/favicon.ico" />
+
+    <meta property="og:type" content="website" />
+
+    <meta property="og:title" content={title} />
+
+    <meta property="og:description" content={description} />
+
+    <meta property="og:url" content={siteUrl} />
+
+    <meta property="og:image" content={ogImage} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="twitter:title" content={title} />
+
+    <meta name="twitter:description" content={description} />
+
+    <meta name="twitter:image" content={ogImage} />
   </head>
 
-  <body class="relative overflow-x-hidden bg-[#07070A] text-white">
-    <!-- Background Glow 1 -->
+  <body class="relative overflow-x-hidden bg-[#050505] text-white">
+    <BackgroundFX />
+
+    <!-- Purple Ambient Glow -->
+
     <div
-      class="pointer-events-none fixed left-[-250px] top-[-250px] h-[600px] w-[600px] rounded-full bg-violet-600/15 blur-[180px]"
+      class="pointer-events-none fixed left-[-260px] top-[40px] h-[700px] w-[700px] rounded-full bg-violet-600/20 blur-[170px]"
     >
     </div>
 
-    <!-- Background Glow 2 -->
+    <!-- Golden Ambient Glow -->
+
     <div
-      class="pointer-events-none fixed right-[-250px] top-[120px] h-[500px] w-[500px] rounded-full bg-fuchsia-600/10 blur-[170px]"
+      class="pointer-events-none fixed right-[-260px] top-[140px] h-[700px] w-[700px] rounded-full bg-[#D4AF37]/20 blur-[170px]"
     >
     </div>
 
-    <!-- Background Glow 3 -->
+    <!-- Floating Dust Particles -->
+    <!-- Purple Particles -->
+
     <div
-      class="pointer-events-none fixed bottom-[-220px] left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-blue-600/10 blur-[170px]"
+      class="pointer-events-none fixed left-[8%] top-[18%] h-2 w-2 rounded-full bg-violet-300/70 blur-[2px] animate-pulse"
     >
     </div>
 
-    <!-- Grid -->
     <div
-      class="pointer-events-none fixed inset-0 opacity-[0.03]"
-      style="
-      background-image:
-      linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
-      background-size:48px 48px;
-    "
+      class="pointer-events-none fixed left-[24%] top-[64%] h-1.5 w-1.5 rounded-full bg-violet-400/60 blur-[2px] animate-pulse"
+      style="animation-delay:1.8s;"
+    >
+    </div>
+
+    <div
+      class="pointer-events-none fixed left-[14%] bottom-[14%] h-2 w-2 rounded-full bg-violet-300/60 blur-[3px] animate-pulse"
+      style="animation-delay:3.5s;"
+    >
+    </div>
+
+    <div
+      class="pointer-events-none fixed left-[34%] top-[38%] h-1 w-1 rounded-full bg-violet-200/60 blur-[1px] animate-pulse"
+      style="animation-delay:5s;"
+    >
+    </div>
+
+    <!-- Golden Particles -->
+
+    <div
+      class="pointer-events-none fixed right-[14%] top-[22%] h-2 w-2 rounded-full bg-[#FFD54A]/80 blur-[2px] animate-pulse"
+      style="animation-delay:1s;"
+    >
+    </div>
+
+    <div
+      class="pointer-events-none fixed right-[24%] bottom-[18%] h-2 w-2 rounded-full bg-[#FFD54A]/70 blur-[2px] animate-pulse"
+      style="animation-delay:2.6s;"
+    >
+    </div>
+
+    <div
+      class="pointer-events-none fixed right-[36%] top-[70%] h-1.5 w-1.5 rounded-full bg-[#FFE27A]/70 blur-[2px] animate-pulse"
+      style="animation-delay:4.2s;"
+    >
+    </div>
+
+    <div
+      class="pointer-events-none fixed right-[8%] bottom-[32%] h-1 w-1 rounded-full bg-[#FFE27A]/60 blur-[1px] animate-pulse"
+      style="animation-delay:6s;"
+    >
+    </div>
+
+    <!-- Very Soft Vignette -->
+
+    <div
+      class="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,rgba(0,0,0,.22)_100%)]"
     >
     </div>
 

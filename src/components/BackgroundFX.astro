@@ -1,0 +1,130 @@
+---
+/**
+ * BackgroundFX
+ * -------------------------------------------------------------------------
+ * One continuous ambient lighting layer for the entire site.
+ *
+ * USAGE — add this ONCE, as the very first element inside <body>, in your
+ * root Layout.astro:
+ *
+ *   <body class="relative bg-[#050505]">
+ *     <BackgroundFX />
+ *     <Navbar />
+ *     <slot />
+ *     <Footer />
+ *   </body>
+ *
+ * Because it's `fixed inset-0 -z-10`, it sits behind every section and
+ * stays put while the page scrolls, so the purple/gold glow reads as one
+ * continuous field instead of each section relighting itself. Individual
+ * sections (Hero, Features, Footer, etc.) should stay transparent — no
+ * more `bg-[#050505]` or duplicate glow divs on the sections themselves.
+ * -------------------------------------------------------------------------
+ */
+---
+
+<div
+  aria-hidden="true"
+  class="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#050505]"
+>
+  <!-- Base depth gradient -->
+  <div
+    class="absolute inset-0 bg-[radial-gradient(ellipse_120%_70%_at_50%_-10%,rgba(18,18,22,0.65),transparent_60%)]"
+  >
+  </div>
+
+  <!-- Large flowing purple glow -->
+  <div
+    class="absolute -left-[22%] top-[-14%] h-[820px] w-[820px] rounded-full bg-violet-700/[0.13] blur-[170px]"
+  >
+  </div>
+
+  <div
+    class="absolute left-[6%] top-[58%] h-[620px] w-[620px] rounded-full bg-violet-600/[0.08] blur-[190px]"
+  >
+  </div>
+
+  <!-- Large flowing golden glow -->
+  <div
+    class="absolute -right-[18%] top-[2%] h-[760px] w-[760px] rounded-full bg-[#D4AF37]/[0.11] blur-[180px]"
+  >
+  </div>
+
+  <div
+    class="absolute right-[2%] top-[72%] h-[560px] w-[560px] rounded-full bg-[#D4AF37]/[0.07] blur-[200px]"
+  >
+  </div>
+
+  <!-- Soft central radial lift, keeps the middle of the page from reading flat -->
+  <div
+    class="absolute left-1/2 top-[40%] h-[900px] w-[1200px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.025),transparent_65%)]"
+  >
+  </div>
+
+  <!-- Curved light streaks -->
+  <svg
+    class="absolute inset-0 h-full w-full opacity-[0.14]"
+    viewBox="0 0 1600 1400"
+    preserveAspectRatio="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <linearGradient id="bgfx-streak-gold" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#D4AF37" stop-opacity="0"></stop>
+        <stop offset="50%" stop-color="#D4AF37" stop-opacity="0.6"></stop>
+        <stop offset="100%" stop-color="#D4AF37" stop-opacity="0"></stop>
+      </linearGradient>
+      <linearGradient id="bgfx-streak-violet" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#7C3AED" stop-opacity="0"></stop>
+        <stop offset="50%" stop-color="#7C3AED" stop-opacity="0.55"></stop>
+        <stop offset="100%" stop-color="#7C3AED" stop-opacity="0"></stop>
+      </linearGradient>
+    </defs>
+
+    <path
+      d="M -100 260 C 420 90, 940 480, 1700 200"
+      stroke="url(#bgfx-streak-violet)"
+      stroke-width="1.5"
+      fill="none"
+    ></path>
+
+    <path
+      d="M -100 720 C 480 940, 1020 520, 1700 820"
+      stroke="url(#bgfx-streak-gold)"
+      stroke-width="1.5"
+      fill="none"
+    ></path>
+
+    <path
+      d="M -100 1080 C 460 900, 980 1220, 1700 1000"
+      stroke="url(#bgfx-streak-violet)"
+      stroke-width="1"
+      fill="none"
+    ></path>
+
+    <path
+      d="M -100 1300 C 500 1180, 1000 1380, 1700 1220"
+      stroke="url(#bgfx-streak-gold)"
+      stroke-width="1"
+      fill="none"
+    ></path>
+  </svg>
+
+  <!-- Subtle grid texture -->
+  <div
+    class="absolute inset-0 opacity-[0.02]"
+    style="background-image: linear-gradient(rgba(255,255,255,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.09) 1px, transparent 1px); background-size: 56px 56px;"
+  >
+  </div>
+
+  <!-- Vignette -->
+  <div
+    class="absolute inset-0 bg-[radial-gradient(ellipse_100%_90%_at_50%_38%,transparent_40%,rgba(0,0,0,0.6)_100%)]"
+  >
+  </div>
+
+  <div
+    class="absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/75"
+  >
+  </div>
+</div>
