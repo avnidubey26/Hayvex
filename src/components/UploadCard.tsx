@@ -1,4 +1,4 @@
-import { useRef, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { Upload, FileImage } from "lucide-preact";
 
 import ImagePreview from "./ImagePreview";
@@ -6,14 +6,80 @@ import ProgressBar from "./ProgressBar";
 import OCRResult from "./OCRResult";
 
 import { recognizeText } from "../lib/tesseract";
+import { preprocessImage } from "../lib/imageProcessor";
 
 import {
   renderPdfPageToImage,
   renderAllPdfPages,
 } from "../lib/pdf";
 
+type ProcessingStage =
+  | "idle"
+  | "analyzing"
+  | "optimizing"
+  | "extracting";
+
+const STAGE_LABELS: Record<ProcessingStage, string> = {
+  idle: "Extract Text",
+  analyzing: "Analyzing image...",
+  optimizing: "Optimizing image...",
+  extracting: "Extracting text...",
+};
+
+const OCR_ERROR_MESSAGE =
+  "Unable to accurately recognize this document.\n\nSuggestions:\n• Use a clearer image\n• Keep document straight\n• Improve lighting";
+
+const EMPTY_RESULT_MESSAGE =
+  "No readable text was found in this document.";
+
+const MIN_WORD_LENGTH = 2;
+const MAX_SYMBOL_RATIO = 0.6;
+const COMPLETE_HOLD_MS = 250;
+
+function nextFrame(): Promise<void> {
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => resolve());
+  });
+}
+
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+type OcrClassification = "empty" | "failure" | "ok";
+
+function isMeaningfulWord(word: string): boolean {
+  const alphanumeric = word.replace(/[^a-zA-Z0-9]/g, "");
+
+  return alphanumeric.length >= MIN_WORD_LENGTH;
+}
+
+function classifyOcrText(text: string): OcrClassification {
+  const trimmed = text.trim();
+
+  if (trimmed.length === 0) {
+    return "empty";
+  }
+
+  const words = trimmed.split(/\s+/).filter(Boolean);
+  const meaningfulWords = words.filter(isMeaningfulWord);
+
+  const alphanumericCount = (trimmed.match(/[a-zA-Z0-9]/g) ?? []).length;
+  const symbolRatio = 1 - alphanumericCount / trimmed.length;
+
+  if (meaningfulWords.length === 0 || symbolRatio > MAX_SYMBOL_RATIO) {
+    return "failure";
+  }
+
+  return "ok";
+}
+
 export default function UploadCard() {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const requestIdRef = useRef(0);
+  const previewUrlRef = useRef<string | null>(null);
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -23,21 +89,46 @@ export default function UploadCard() {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [ocrText, setOcrText] = useState("");
+  const [processingStage, setProcessingStage] =
+    useState<ProcessingStage>("idle");
 
   const IMAGE_LIMIT = 10 * 1024 * 1024;
   const PDF_LIMIT = 100 * 1024 * 1024;
 
-  function resetState() {
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
+  // Revokes the previous object URL (if any) exactly once, synchronously,
+  // before swapping in the next one. This is the single source of truth
+  // for preview URL cleanup — no other code path should call
+  // URL.revokeObjectURL on previewUrl.
+  function updatePreviewUrl(nextUrl: string | null) {
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
     }
 
+    previewUrlRef.current = nextUrl;
+    setPreviewUrl(nextUrl);
+  }
+
+  // Safety net for unmount only, so a URL created just before the
+  // component goes away is still released.
+  useEffect(() => {
+    return () => {
+      if (previewUrlRef.current) {
+        URL.revokeObjectURL(previewUrlRef.current);
+        previewUrlRef.current = null;
+      }
+    };
+  }, []);
+
+  function resetState() {
+    requestIdRef.current++;
+
     setSelectedFile(null);
-    setPreviewUrl(null);
+    updatePreviewUrl(null);
     setOcrText("");
     setProgress(0);
     setLoading(false);
     setDragActive(false);
+    setProcessingStage("idle");
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -68,34 +159,45 @@ export default function UploadCard() {
   }
 
   async function handleFile(file: File) {
+    if (loading) return;
     if (!validateFile(file)) return;
 
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-    }
+    const requestId = ++requestIdRef.current;
 
     setSelectedFile(file);
-    setPreviewUrl(null);
+    updatePreviewUrl(null);
     setOcrText("");
     setProgress(0);
 
     if (file.type.startsWith("image/")) {
-      setPreviewUrl(URL.createObjectURL(file));
+      updatePreviewUrl(URL.createObjectURL(file));
       return;
     }
 
     try {
       const firstPage = await renderPdfPageToImage(file, 1);
+
+      if (requestIdRef.current !== requestId) {
+        return;
+      }
+
       const preview = URL.createObjectURL(firstPage);
-      setPreviewUrl(preview);
+      updatePreviewUrl(preview);
     } catch (error) {
       console.error(error);
+
+      if (requestIdRef.current !== requestId) {
+        return;
+      }
+
       alert("Unable to render PDF preview.");
       resetState();
     }
   }
 
   function openFilePicker() {
+    if (loading) return;
+
     fileInputRef.current?.click();
   }
 
@@ -136,39 +238,100 @@ export default function UploadCard() {
     setProgress(0);
     setOcrText("");
 
+    let reachedComplete = false;
+
     try {
       if (selectedFile.type.startsWith("image/")) {
-        const text = await recognizeText(selectedFile, (value) => {
+        setProcessingStage("analyzing");
+        await nextFrame();
+
+        setProcessingStage("optimizing");
+        await nextFrame();
+
+        let processedImage: File | Blob;
+
+        try {
+          processedImage = await preprocessImage(selectedFile);
+        } catch (preprocessError) {
+          console.warn(
+            "Image preprocessing failed, falling back to original image.",
+            preprocessError,
+          );
+          processedImage = selectedFile;
+        }
+
+        setProcessingStage("extracting");
+        await nextFrame();
+        const text = await recognizeText(processedImage, (value) => {
           setProgress(value);
         });
 
         setProgress(1);
-        setOcrText(text);
+        reachedComplete = true;
 
+        const classification = classifyOcrText(text);
+
+        if (classification === "empty") {
+          setOcrText(EMPTY_RESULT_MESSAGE);
+          return;
+        }
+
+        if (classification === "failure") {
+          alert(OCR_ERROR_MESSAGE);
+          return;
+        }
+
+        setOcrText(text);
         return;
       }
 
+      setProcessingStage("extracting");
+      await nextFrame();
+
       const pageImages = await renderAllPdfPages(selectedFile);
+      const totalPages = pageImages.length;
 
       let finalText = "";
+      let rawText = "";
 
-      for (let i = 0; i < pageImages.length; i++) {
-        setProgress(i / pageImages.length);
+      for (let i = 0; i < totalPages; i++) {
+        const pageText = await recognizeText(pageImages[i], (pageProgress) => {
+          setProgress((i + pageProgress) / totalPages);
+        });
 
-        const pageText = await recognizeText(pageImages[i]);
+        rawText += pageText;
 
-        finalText += `\n\n========== PAGE ${i + 1} ==========\n\n`;
+        finalText += `\n\n## Page ${i + 1}\n\n`;
         finalText += pageText;
       }
 
       setProgress(1);
+      reachedComplete = true;
+
+      const classification = classifyOcrText(rawText);
+
+      if (classification === "empty") {
+        setOcrText(EMPTY_RESULT_MESSAGE);
+        return;
+      }
+
+      if (classification === "failure") {
+        alert(OCR_ERROR_MESSAGE);
+        return;
+      }
+
       setOcrText(finalText.trim());
     } catch (error) {
       console.error(error);
 
-      alert("OCR failed.");
+      alert(OCR_ERROR_MESSAGE);
     } finally {
+      if (reachedComplete) {
+        await wait(COMPLETE_HOLD_MS);
+      }
+
       setLoading(false);
+      setProcessingStage("idle");
     }
   }
 
@@ -264,7 +427,7 @@ export default function UploadCard() {
 
             <FileImage size={14} />
 
-            {loading ? "Processing..." : "Extract Text"}
+            {loading ? STAGE_LABELS[processingStage] : "Extract Text"}
 
           </button>
 

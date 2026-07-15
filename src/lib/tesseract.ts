@@ -6,7 +6,9 @@ import {
 
 let worker: Worker | null = null;
 
-let progressCallback: ((progress: number) => void) | undefined;
+let progressCallback:
+  | ((progress: number) => void)
+  | undefined;
 
 async function getWorker(): Promise<Worker> {
   if (worker) {
@@ -24,9 +26,22 @@ async function getWorker(): Promise<Worker> {
     },
   });
 
+  await worker.setParameters({
+    preserve_interword_spaces: "1",
+    user_defined_dpi: "300",
+  });
+
   return worker;
 }
 
+function cleanupOCRText(text: string): string {
+  return text
+    .replace(/\r\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/[^\S\n]+\n/g, "\n")
+    .trim();
+}
 export async function recognizeText(
   image: File | Blob,
   onProgress?: (progress: number) => void,
@@ -36,12 +51,18 @@ export async function recognizeText(
   try {
     const ocrWorker = await getWorker();
 
-    const result = await ocrWorker.recognize(image);
+    const {
+      data: { text },
+    } = await ocrWorker.recognize(image);
 
-    return result.data.text.trim();
+    return cleanupOCRText(text);
   } finally {
     progressCallback = undefined;
   }
+}
+
+export async function warmupOCR(): Promise<void> {
+  await getWorker();
 }
 
 export async function terminateOCRWorker(): Promise<void> {
@@ -50,5 +71,6 @@ export async function terminateOCRWorker(): Promise<void> {
   }
 
   await worker.terminate();
+
   worker = null;
 }
