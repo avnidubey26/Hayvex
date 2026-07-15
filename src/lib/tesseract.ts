@@ -51,11 +51,43 @@ export async function recognizeText(
   try {
     const ocrWorker = await getWorker();
 
-    const {
-      data: { text },
-    } = await ocrWorker.recognize(image);
+    const { data } = await ocrWorker.recognize(image);
 
-    return cleanupOCRText(text);
+    const cleanedText = cleanupOCRText(data.text);
+
+    // Empty OCR
+    if (!cleanedText) {
+      return "";
+    }
+
+    // Confidence (0-100)
+    const confidence =
+      typeof data.confidence === "number"
+        ? data.confidence
+        : 100;
+
+    // Reject tiny low-confidence garbage
+    if (
+      confidence < 35 &&
+      cleanedText.length < 25
+    ) {
+      return "";
+    }
+
+    // Reject symbol-heavy garbage
+    const symbolCount =
+      (cleanedText.match(/[^a-zA-Z0-9\s]/g) ?? []).length;
+
+    const symbolRatio =
+      cleanedText.length > 0
+        ? symbolCount / cleanedText.length
+        : 0;
+
+    if (symbolRatio > 0.45) {
+      return "";
+    }
+
+    return cleanedText;
   } finally {
     progressCallback = undefined;
   }
