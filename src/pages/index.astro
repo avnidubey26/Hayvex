@@ -3,13 +3,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Navbar from "../components/Navbar.astro";
 import Hero from "../components/Hero.astro";
 import Features from "../components/Features.astro";
+import FAQ from "../components/FAQ.astro";
 import Footer from "../components/Footer.astro";
 ---
 
 <BaseLayout
-  title="Hayvex - AI Document Intelligence"
-  description="Privacy-first AI Document Intelligence platform. Your files never leave your device."
->
+  title="Hayvex | Free AI OCR for Images & PDFs"
+  description="Extract text instantly from images and PDFs with Hayvex. Privacy-first AI OCR that runs directly in your browser. No uploads. No signup required.">
+</BaseLayout>
   <Navbar />
 
   <main class="bg-[#09090B] text-white">
@@ -18,7 +19,9 @@ import Footer from "../components/Footer.astro";
 
     <Features />
 
-	<Footer />
+    <FAQ />
+
+	  <Footer />
 
   </main>
 
