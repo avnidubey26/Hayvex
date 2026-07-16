@@ -54,11 +54,14 @@ const faqSchema = {
     },
   })),
 };
+
+const faqSchemaJson = JSON.stringify(faqSchema);
 ---
 
-<script type="application/ld+json">
-  {JSON.stringify(faqSchema)}
-</script>
+<script
+  type="application/ld+json"
+  set:html={faqSchemaJson}
+></script>
 
 <section
   id="faq"
@@ -68,8 +71,7 @@ const faqSchema = {
 
   <div
     class="pointer-events-none absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-[#D4AF37]/10 blur-[120px]"
-  >
-  </div>
+  ></div>
 
   <div class="relative mx-auto max-w-4xl px-6">
     <!-- Heading -->
@@ -108,9 +110,7 @@ const faqSchema = {
             </summary>
 
             <div class="border-t border-white/10 px-6 py-5">
-              <p class="leading-7 text-zinc-400">
-                {faq.answer}
-              </p>
+              <p class="leading-7 text-zinc-400">{faq.answer}</p>
             </div>
           </details>
         ))
@@ -121,8 +121,8 @@ const faqSchema = {
 
     <div class="mt-14 text-center">
       <p class="mx-auto max-w-2xl text-sm leading-7 text-zinc-500">
-        Still have questions? Hayvex is continuously evolving into a complete
-        AI Document Intelligence platform with faster OCR, smarter document
+        Still have questions? Hayvex is continuously evolving into a complete AI
+        Document Intelligence platform with faster OCR, smarter document
         understanding, and many more features coming soon.
       </p>
 
