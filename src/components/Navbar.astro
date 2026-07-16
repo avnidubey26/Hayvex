@@ -1,247 +1,160 @@
 <header
-  class="fixed inset-x-0 top-0 z-50 border-b border-white/[0.08] bg-[#050505]/70 shadow-[0_1px_0_0_rgba(255,255,255,0.03)] backdrop-blur-2xl"
+  class="fixed inset-x-0 top-0 z-50 border-b border-white/[0.08] bg-[#050505]/70 backdrop-blur-2xl"
 >
   <nav
     class="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8"
   >
     <!-- Logo -->
 
-    <a href="/" class="group flex shrink-0 items-center gap-3">
-      <div
-        class="flex h-9 w-9 items-center justify-center rounded-xl border border-[#D4AF37]/25 bg-gradient-to-br from-[#FFE59A] via-[#D4AF37] to-[#9F7A00] shadow-[0_0_0_1px_rgba(212,175,55,0.15),0_8px_20px_-6px_rgba(212,175,55,0.35)] transition duration-300 group-hover:scale-105"
-      >
-        <span class="text-base font-black text-[#050505]"> H </span>
-      </div>
+    <a href="/" class="group flex items-center gap-3">
+      <img
+        src="/favicon.png"
+        alt="Hayvex Logo"
+        class="h-10 w-10 rounded-xl object-cover transition duration-300 group-hover:scale-105"
+      />
 
-      <span
-        class="text-[15px] font-semibold tracking-tight text-white"
-      >
+      <span class="text-[15px] font-semibold tracking-tight text-white">
         Hayvex
       </span>
     </a>
 
-    <!-- Navigation -->
+    <!-- Desktop Navigation -->
 
-    <div class="hidden h-16 items-center gap-1 lg:flex">
+    <div class="hidden items-center gap-8 lg:flex">
       <a
-        href="#"
-        class="flex h-16 items-center border-b-2 border-transparent px-4 text-sm font-medium text-zinc-400 transition-colors duration-200 hover:border-[#D4AF37]/60 hover:text-white"
+        href="/"
+        class="text-sm font-medium text-zinc-400 transition hover:text-[#D4AF37]"
       >
-        Image OCR
+        Home
       </a>
 
       <a
-        href="#"
-        class="flex h-16 items-center border-b-2 border-transparent px-4 text-sm font-medium text-zinc-400 transition-colors duration-200 hover:border-[#D4AF37]/60 hover:text-white"
+        href="#upload"
+        class="text-sm font-medium text-zinc-400 transition hover:text-[#D4AF37]"
       >
-        PDF OCR
+        OCR
       </a>
 
       <a
-        href="#features"
-        class="flex h-16 items-center border-b-2 border-transparent px-4 text-sm font-medium text-zinc-400 transition-colors duration-200 hover:border-[#D4AF37]/60 hover:text-white"
+        href="#faq"
+        class="text-sm font-medium text-zinc-400 transition hover:text-[#D4AF37]"
       >
-        Features
-      </a>
-
-      <a
-        href="#"
-        class="flex h-16 items-center border-b-2 border-transparent px-4 text-sm font-medium text-zinc-400 transition-colors duration-200 hover:border-[#D4AF37]/60 hover:text-white"
-      >
-        Roadmap
+        FAQ
       </a>
     </div>
 
     <!-- Right Side -->
 
-    <div class="flex items-center gap-2.5">
-      <!-- Theme Toggle -->
-
-      <button
-        id="theme-toggle"
-        type="button"
-        class="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-zinc-300 transition duration-200 hover:border-[#D4AF37]/40 hover:bg-white/[0.07] hover:text-[#D4AF37]"
-        aria-label="Toggle theme"
-      >
-        <svg
-          id="theme-icon-moon"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="h-[18px] w-[18px]"
-        >
-          <path
-            d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"
-          ></path>
-        </svg>
-
-        <svg
-          id="theme-icon-sun"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="hidden h-[18px] w-[18px]"
-        >
-          <circle cx="12" cy="12" r="4"></circle>
-          <path
-            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
-          ></path>
-        </svg>
-      </button>
-
-      <!-- CTA -->
-
+    <div class="flex items-center gap-3">
       <a
         href="#upload"
-        class="hidden items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#A97A14] px-4 py-2.5 text-sm font-semibold text-black shadow-[0_6px_20px_-6px_rgba(212,175,55,0.55)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_8px_24px_-6px_rgba(212,175,55,0.7)] lg:inline-flex"
+        class="hidden rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#A97A14] px-5 py-2.5 text-sm font-semibold text-black transition duration-300 hover:scale-[1.03] lg:inline-flex"
       >
-        Try OCR
+        Start OCR
       </a>
-
-      <!-- Mobile Menu Button -->
 
       <button
         id="mobile-menu-button"
         type="button"
-        class="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-zinc-300 transition duration-200 hover:border-[#D4AF37]/40 hover:text-[#D4AF37] lg:hidden"
-        aria-label="Toggle menu"
+        aria-label="Toggle Menu"
         aria-expanded="false"
+        class="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white lg:hidden"
       >
         <svg
           id="menu-icon-open"
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
+          class="h-5 w-5"
           fill="none"
+          viewBox="0 0 24 24"
           stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="h-[18px] w-[18px]"
         >
-          <path d="M3 6h18M3 12h18M3 18h18"></path>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
 
         <svg
           id="menu-icon-close"
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
+          class="hidden h-5 w-5"
           fill="none"
+          viewBox="0 0 24 24"
           stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="hidden h-[18px] w-[18px]"
         >
-          <path d="M18 6 6 18M6 6l12 12"></path>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"></path>
         </svg>
       </button>
     </div>
   </nav>
 
-  <!-- Mobile Menu Panel -->
+  <!-- Mobile Menu -->
 
   <div
     id="mobile-menu"
-    class="hidden border-t border-white/[0.08] bg-[#050505]/95 backdrop-blur-2xl lg:hidden"
+    class="hidden border-t border-white/10 bg-[#050505]/95 lg:hidden"
   >
-    <div class="flex flex-col gap-1 px-6 py-4">
+    <div class="flex flex-col gap-2 px-6 py-5">
       <a
-        href="#"
-        class="rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-400 transition hover:bg-white/5 hover:text-white"
+        href="/"
+        class="rounded-lg px-3 py-2 text-zinc-400 transition hover:bg-white/5 hover:text-white"
       >
-        Image OCR
-      </a>
-
-      <a
-        href="#"
-        class="rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-400 transition hover:bg-white/5 hover:text-white"
-      >
-        PDF OCR
-      </a>
-
-      <a
-        href="#features"
-        class="rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-400 transition hover:bg-white/5 hover:text-white"
-      >
-        Features
-      </a>
-
-      <a
-        href="#"
-        class="rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-400 transition hover:bg-white/5 hover:text-white"
-      >
-        Roadmap
+        Home
       </a>
 
       <a
         href="#upload"
-        class="mt-2 flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#A97A14] px-4 py-2.5 text-sm font-semibold text-black transition duration-300 hover:scale-[1.01]"
+        class="rounded-lg px-3 py-2 text-zinc-400 transition hover:bg-white/5 hover:text-white"
       >
-        Try OCR
+        OCR
+      </a>
+
+      <a
+        href="#faq"
+        class="rounded-lg px-3 py-2 text-zinc-400 transition hover:bg-white/5 hover:text-white"
+      >
+        FAQ
+      </a>
+
+      <a
+        href="#upload"
+        class="mt-2 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#A97A14] px-4 py-2.5 text-center font-semibold text-black"
+      >
+        Start OCR
       </a>
     </div>
   </div>
-</header>
 
-<script is:inline>
-  const root = document.documentElement;
-  const themeButton = document.getElementById("theme-toggle");
-  const moonIcon = document.getElementById("theme-icon-moon");
-  const sunIcon = document.getElementById("theme-icon-sun");
+  <script is:inline>
+    // Mobile Menu Toggle
 
-  const savedTheme = localStorage.getItem("theme");
+    const menuButton = document.getElementById("mobile-menu-button");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuIconOpen = document.getElementById("menu-icon-open");
+    const menuIconClose = document.getElementById("menu-icon-close");
 
-  function setThemeIcons(isLight) {
-    if (!moonIcon || !sunIcon) return;
+    menuButton?.addEventListener("click", () => {
+      const isHidden = mobileMenu?.classList.contains("hidden");
 
-    moonIcon.classList.toggle("hidden", isLight);
-    sunIcon.classList.toggle("hidden", !isLight);
-  }
+      mobileMenu?.classList.toggle("hidden");
+      menuIconOpen?.classList.toggle("hidden");
+      menuIconClose?.classList.toggle("hidden");
 
-  if (savedTheme === "light") {
-    root.classList.add("light");
-    setThemeIcons(true);
-  }
-
-  themeButton?.addEventListener("click", () => {
-    const isLight = root.classList.toggle("light");
-
-    localStorage.setItem("theme", isLight ? "light" : "dark");
-
-    setThemeIcons(isLight);
-  });
-
-  // Mobile menu toggle
-
-  const menuButton = document.getElementById("mobile-menu-button");
-  const mobileMenu = document.getElementById("mobile-menu");
-  const menuIconOpen = document.getElementById("menu-icon-open");
-  const menuIconClose = document.getElementById("menu-icon-close");
-
-  menuButton?.addEventListener("click", () => {
-    const isHidden = mobileMenu?.classList.contains("hidden");
-
-    mobileMenu?.classList.toggle("hidden");
-    menuIconOpen?.classList.toggle("hidden");
-    menuIconClose?.classList.toggle("hidden");
-
-    menuButton.setAttribute("aria-expanded", isHidden ? "true" : "false");
-  });
-
-  mobileMenu?.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      mobileMenu.classList.add("hidden");
-      menuIconOpen?.classList.remove("hidden");
-      menuIconClose?.classList.add("hidden");
-      menuButton?.setAttribute("aria-expanded", "false");
+      menuButton.setAttribute("aria-expanded", isHidden ? "true" : "false");
     });
-  });
-</script>
+
+    mobileMenu?.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.add("hidden");
+        menuIconOpen?.classList.remove("hidden");
+        menuIconClose?.classList.add("hidden");
+        menuButton?.setAttribute("aria-expanded", "false");
+      });
+    });
+  </script>
+</header>

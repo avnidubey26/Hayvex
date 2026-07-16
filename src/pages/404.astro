@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="404 - Page Not Found | Hayvex"
+  description="The page you're looking for doesn't exist."
+>
+
+<section class="mx-auto flex min-h-[80vh] max-w-4xl flex-col items-center justify-center px-6 text-center">
+
+  <h1 class="text-7xl font-bold text-[#D4AF37]">
+    404
+  </h1>
+
+  <h2 class="mt-6 text-3xl font-semibold text-white">
+    Page Not Found
+  </h2>
+
+  <p class="mt-4 max-w-xl text-zinc-400">
+    The page you requested doesn't exist or may have been moved.
+  </p>
+
+  <a
+    href="/"
+    class="mt-8 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#A97A14] px-6 py-3 font-medium text-black transition hover:scale-105"
+  >
+    Back to Home
+  </a>
+
+</section>
+
+</BaseLayout>

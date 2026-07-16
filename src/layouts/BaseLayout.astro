@@ -9,11 +9,21 @@ interface Props {
 
 const {
   title,
-  description = "Hayvex is a privacy-first AI OCR platform that extracts text from images and PDFs directly in your browser.",
+  description =
+    "Hayvex is a privacy-first AI OCR platform that extracts text from images and PDFs directly in your browser.",
 } = Astro.props;
 
-const siteUrl = "https://vaikva.com";
-const ogImage = "/og-image.png";
+const siteUrl = "https://hayvex.vaikva.com";
+
+const canonical = new URL(
+  Astro.url.pathname,
+  siteUrl,
+).toString();
+
+const ogImage = new URL(
+  "/og-image.png",
+  siteUrl,
+).toString();
 ---
 
 <!doctype html>
@@ -21,116 +31,234 @@ const ogImage = "/og-image.png";
   <head>
     <meta charset="UTF-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
 
     <title>{title}</title>
 
-    <meta name="description" content={description} />
+    <meta
+      name="description"
+      content={description}
+    />
 
     <meta
       name="keywords"
-      content="OCR, Image OCR, PDF OCR, AI OCR, Hayvex, Vaikva"
+      content="OCR, Image OCR, PDF OCR, AI OCR, Hayvex, VaikvaAI OCR, OCR, Image to Text, PDF OCR, Image OCR, Online OCR, Browser OCR, Privacy First OCR, Hayvex, Vaikva"
     />
 
-    <meta name="theme-color" content="#050505" />
+    <meta
+      name="theme-color"
+      content="#050505"
+    />
 
-    <link rel="icon" href="/favicon.ico" />
+    <meta
+      name="robots"
+      content="index, follow"
+    />
 
-    <meta property="og:type" content="website" />
+    <meta
+      name="author"
+      content="Vaikva"
+    />
 
-    <meta property="og:title" content={title} />
+    <meta
+      name="creator"
+      content="Vaikva"
+    />
 
-    <meta property="og:description" content={description} />
+    <meta
+      name="application-name"
+      content="Hayvex"
+    />
 
-    <meta property="og:url" content={siteUrl} />
+   
 
-    <meta property="og:image" content={ogImage} />
+    <meta
+      name="mobile-web-app-capable"
+      content="yes"
+    />
 
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
 
-    <meta name="twitter:title" content={title} />
+    <link
+      rel="canonical"
+      href={canonical}
+    />
 
-    <meta name="twitter:description" content={description} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
 
-    <meta name="twitter:image" content={ogImage} />
+<link rel="icon" type="image/png" href="/favicon.png" />
+
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+<link rel="manifest" href="/site.webmanifest" />
+
+
+    <meta
+      property="og:type"
+      content="website"
+    />
+
+    <meta
+      property="og:title"
+      content={title}
+    />
+
+    <meta
+      property="og:description"
+      content={description}
+    />
+
+    <meta
+      property="og:url"
+      content={canonical}
+    />
+
+    <meta
+      property="og:image"
+      content={ogImage}
+    />
+
+    <meta
+      property="og:site_name"
+      content="Hayvex"
+    />
+
+    <meta
+      property="og:locale"
+      content="en_US"
+    />
+
+    <meta
+      name="twitter:card"
+      content="summary_large_image"
+    />
+
+    <meta
+      name="twitter:title"
+      content={title}
+    />
+
+    <meta
+      name="twitter:description"
+      content={description}
+    />
+
+    <meta
+      name="twitter:image"
+      content={ogImage}
+    />
+
+    
+
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        name: "Hayvex",
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Any",
+        url: siteUrl,
+        description,
+        creator: {
+          "@type": "Organization",
+          name: "Vaikva",
+        },
+      })}
+    </script>
+    <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Vaikva",
+    url: siteUrl,
+    logo: `${siteUrl}/favicon.png`,
+    sameAs: [],
+  })}
+</script>
   </head>
+  <body
+  class="relative min-h-screen overflow-x-hidden bg-[#050505] text-white antialiased"
+>
+  <BackgroundFX />
 
-  <body class="relative overflow-x-hidden bg-[#050505] text-white">
-    <BackgroundFX />
+  <!-- Purple Ambient Glow -->
 
-    <!-- Purple Ambient Glow -->
+  <div
+    class="pointer-events-none fixed left-[-260px] top-[40px] h-[700px] w-[700px] rounded-full bg-violet-600/20 blur-[170px]"
+  >
+  </div>
 
-    <div
-      class="pointer-events-none fixed left-[-260px] top-[40px] h-[700px] w-[700px] rounded-full bg-violet-600/20 blur-[170px]"
-    >
-    </div>
+  <!-- Golden Ambient Glow -->
 
-    <!-- Golden Ambient Glow -->
+  <div
+    class="pointer-events-none fixed right-[-260px] top-[140px] h-[700px] w-[700px] rounded-full bg-[#D4AF37]/20 blur-[170px]"
+  >
+  </div>
 
-    <div
-      class="pointer-events-none fixed right-[-260px] top-[140px] h-[700px] w-[700px] rounded-full bg-[#D4AF37]/20 blur-[170px]"
-    >
-    </div>
+  <!-- Floating Dust Particles -->
 
-    <!-- Floating Dust Particles -->
-    <!-- Purple Particles -->
+  <div
+    class="pointer-events-none fixed left-[8%] top-[18%] h-2 w-2 rounded-full bg-violet-300/70 blur-[2px] animate-pulse"
+  >
+  </div>
 
-    <div
-      class="pointer-events-none fixed left-[8%] top-[18%] h-2 w-2 rounded-full bg-violet-300/70 blur-[2px] animate-pulse"
-    >
-    </div>
+  <div
+    class="pointer-events-none fixed left-[24%] top-[64%] h-1.5 w-1.5 rounded-full bg-violet-400/60 blur-[2px] animate-pulse"
+    style="animation-delay:1.8s;"
+  >
+  </div>
 
-    <div
-      class="pointer-events-none fixed left-[24%] top-[64%] h-1.5 w-1.5 rounded-full bg-violet-400/60 blur-[2px] animate-pulse"
-      style="animation-delay:1.8s;"
-    >
-    </div>
+  <div
+    class="pointer-events-none fixed left-[14%] bottom-[14%] h-2 w-2 rounded-full bg-violet-300/60 blur-[3px] animate-pulse"
+    style="animation-delay:3.5s;"
+  >
+  </div>
 
-    <div
-      class="pointer-events-none fixed left-[14%] bottom-[14%] h-2 w-2 rounded-full bg-violet-300/60 blur-[3px] animate-pulse"
-      style="animation-delay:3.5s;"
-    >
-    </div>
+  <div
+    class="pointer-events-none fixed left-[34%] top-[38%] h-1 w-1 rounded-full bg-violet-200/60 blur-[1px] animate-pulse"
+    style="animation-delay:5s;"
+  >
+  </div>
 
-    <div
-      class="pointer-events-none fixed left-[34%] top-[38%] h-1 w-1 rounded-full bg-violet-200/60 blur-[1px] animate-pulse"
-      style="animation-delay:5s;"
-    >
-    </div>
+  <div
+    class="pointer-events-none fixed right-[14%] top-[22%] h-2 w-2 rounded-full bg-[#FFD54A]/80 blur-[2px] animate-pulse"
+    style="animation-delay:1s;"
+  >
+  </div>
 
-    <!-- Golden Particles -->
+  <div
+    class="pointer-events-none fixed right-[24%] bottom-[18%] h-2 w-2 rounded-full bg-[#FFD54A]/70 blur-[2px] animate-pulse"
+    style="animation-delay:2.6s;"
+  >
+  </div>
 
-    <div
-      class="pointer-events-none fixed right-[14%] top-[22%] h-2 w-2 rounded-full bg-[#FFD54A]/80 blur-[2px] animate-pulse"
-      style="animation-delay:1s;"
-    >
-    </div>
+  <div
+    class="pointer-events-none fixed right-[36%] top-[70%] h-1.5 w-1.5 rounded-full bg-[#FFE27A]/70 blur-[2px] animate-pulse"
+    style="animation-delay:4.2s;"
+  >
+  </div>
 
-    <div
-      class="pointer-events-none fixed right-[24%] bottom-[18%] h-2 w-2 rounded-full bg-[#FFD54A]/70 blur-[2px] animate-pulse"
-      style="animation-delay:2.6s;"
-    >
-    </div>
+  <div
+    class="pointer-events-none fixed right-[8%] bottom-[32%] h-1 w-1 rounded-full bg-[#FFE27A]/60 blur-[1px] animate-pulse"
+    style="animation-delay:6s;"
+  >
+  </div>
 
-    <div
-      class="pointer-events-none fixed right-[36%] top-[70%] h-1.5 w-1.5 rounded-full bg-[#FFE27A]/70 blur-[2px] animate-pulse"
-      style="animation-delay:4.2s;"
-    >
-    </div>
+  <!-- Soft Vignette -->
 
-    <div
-      class="pointer-events-none fixed right-[8%] bottom-[32%] h-1 w-1 rounded-full bg-[#FFE27A]/60 blur-[1px] animate-pulse"
-      style="animation-delay:6s;"
-    >
-    </div>
+  <div
+    class="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,rgba(0,0,0,.22)_100%)]"
+  >
+  </div>
 
-    <!-- Very Soft Vignette -->
-
-    <div
-      class="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,rgba(0,0,0,.22)_100%)]"
-    >
-    </div>
-
+  <main id="main-content">
     <slot />
-  </body>
+  </main>
+</body>
 </html>

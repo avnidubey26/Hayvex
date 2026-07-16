@@ -1,0 +1,137 @@
+---
+const faqs = [
+  {
+    question: "Is Hayvex free to use?",
+    answer:
+      "Yes. Hayvex currently allows you to extract text from images and PDFs directly in your browser at no cost.",
+  },
+  {
+    question: "Are my files uploaded to a server?",
+    answer:
+      "No. Hayvex processes your documents directly inside your browser. Your files stay on your device for maximum privacy.",
+  },
+  {
+    question: "Which file formats are supported?",
+    answer:
+      "Hayvex currently supports PNG, JPG, JPEG, WEBP images and PDF documents.",
+  },
+  {
+    question: "Can Hayvex extract text from PDFs?",
+    answer:
+      "Yes. Hayvex supports OCR on PDF files and extracts readable text from scanned pages.",
+  },
+  {
+    question: "Does Hayvex work on mobile devices?",
+    answer:
+      "Yes. Hayvex works on modern mobile browsers as well as desktop browsers.",
+  },
+  {
+    question: "Do I need to create an account?",
+    answer:
+      "No. You can start using Hayvex immediately without creating an account.",
+  },
+  {
+    question: "Which browsers are supported?",
+    answer:
+      "Hayvex works best on the latest versions of Chrome, Edge, Firefox and Safari.",
+  },
+  {
+    question: "Will more AI features be added?",
+    answer:
+      "Yes. Hayvex is evolving into a complete AI Document Intelligence platform with many more capabilities planned.",
+  },
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
+};
+---
+
+<script type="application/ld+json">
+  {JSON.stringify(faqSchema)}
+</script>
+
+<section
+  id="faq"
+  class="scroll-mt-24 relative border-t border-white/10 bg-[#050505] py-24"
+>
+  <!-- Ambient Glow -->
+
+  <div
+    class="pointer-events-none absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-[#D4AF37]/10 blur-[120px]"
+  >
+  </div>
+
+  <div class="relative mx-auto max-w-4xl px-6">
+    <!-- Heading -->
+
+    <div class="text-center">
+      <span
+        class="inline-flex rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-[#D4AF37]"
+      >
+        FAQ
+      </span>
+
+      <h2
+        class="mt-5 text-3xl font-black tracking-tight text-white md:text-5xl"
+      >
+        Frequently Asked Questions
+      </h2>
+
+      <p class="mx-auto mt-5 max-w-2xl text-base leading-7 text-zinc-400">
+        Everything you need to know about Hayvex, privacy-first OCR,
+        supported files and upcoming AI Document Intelligence features.
+      </p>
+    </div>
+
+    <!-- Accordion -->
+
+    <div class="mt-14 space-y-4">
+      {
+        faqs.map((faq) => (
+          <details class="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition duration-300 hover:border-[#D4AF37]/40 hover:bg-white/[0.05]">
+            <summary class="flex cursor-pointer list-none items-center justify-between px-6 py-5 text-left text-base font-semibold text-white">
+              <span>{faq.question}</span>
+
+              <span class="text-xl text-[#D4AF37] transition duration-300 group-open:rotate-45">
+                +
+              </span>
+            </summary>
+
+            <div class="border-t border-white/10 px-6 py-5">
+              <p class="leading-7 text-zinc-400">
+                {faq.answer}
+              </p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+
+    <!-- Bottom CTA -->
+
+    <div class="mt-14 text-center">
+      <p class="mx-auto max-w-2xl text-sm leading-7 text-zinc-500">
+        Still have questions? Hayvex is continuously evolving into a complete
+        AI Document Intelligence platform with faster OCR, smarter document
+        understanding, and many more features coming soon.
+      </p>
+
+      <a
+        href="#upload"
+        class="mt-8 inline-flex items-center rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#A97A14] px-6 py-3 text-sm font-semibold text-black shadow-[0_10px_30px_-10px_rgba(212,175,55,0.6)] transition duration-300 hover:scale-[1.03]"
+      >
+        Start OCR
+      </a>
+    </div>
+  </div>
+</section>
