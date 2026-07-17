@@ -32,8 +32,6 @@ const OCR_ERROR_MESSAGE =
 const EMPTY_RESULT_MESSAGE =
   "No readable text was found in this document.";
 
-const MIN_WORD_LENGTH = 2;
-const MAX_SYMBOL_RATIO = 0.6;
 const COMPLETE_HOLD_MS = 250;
 
 function nextFrame(): Promise<void> {
@@ -48,126 +46,13 @@ function wait(ms: number): Promise<void> {
   });
 }
 
-type OcrClassification = "empty" | "failure" | "ok";
-
-function isMeaningfulWord(word: string): boolean {
-  const alphanumeric = word.replace(/[^a-zA-Z0-9]/g, "");
-
-  return alphanumeric.length >= MIN_WORD_LENGTH;
-}
-
-function getAlnumLength(word: string): number {
-  return word.replace(/[^a-zA-Z0-9]/g, "").length;
-}
-
-// -- classifyOcrText tuning constants --------------------------------------
-// These thresholds are intentionally conservative: classifyOcrText only
-// rejects text when several independent signals agree, so normal documents
-// (resumes, invoices, IDs, addresses, screenshots) are never mistakenly
-// flagged just because they contain short tokens, numbers, or punctuation.
-
-const SHORT_WORD_MAX_LENGTH = 2;
-const SHORT_WORD_RATIO_THRESHOLD = 0.6;
-const AVG_WORD_LENGTH_THRESHOLD = 2.0;
-const SUBSTANTIAL_WORD_MIN_LENGTH = 4;
-const SUBSTANTIAL_WORD_RATIO_THRESHOLD = 0.1;
-const MEANINGFUL_WORD_RATIO_THRESHOLD = 0.35;
-const SINGLE_CHAR_WORD_RATIO_THRESHOLD = 0.45;
-const WEIRD_CHAR_RATIO_THRESHOLD = 0.15;
-const DOMINANT_TOKEN_RATIO_THRESHOLD = 0.4;
-const MIN_WORDS_FOR_PATTERN_CHECK = 6;
-const GARBAGE_SIGNAL_THRESHOLD = 3;
-
-function classifyOcrText(text: string): OcrClassification {
-  const trimmed = text.trim();
-
-  if (trimmed.length === 0) {
-    return "empty";
-  }
-
-  const words = trimmed.split(/\s+/).filter(Boolean);
-
-  if (words.length === 0) {
-    return "empty";
-  }
-
-  const meaningfulWords = words.filter(isMeaningfulWord);
-
-  // No word anywhere in the text clears even the minimum length bar —
-  // this is not borderline, so it is treated as an automatic failure
-  // rather than one vote among many.
-  if (meaningfulWords.length === 0) {
-    return "failure";
-  }
-
-  const meaningfulRatio = meaningfulWords.length / words.length;
-
-  const alnumLengths = words.map(getAlnumLength);
-
-  const singleCharCount = alnumLengths.filter((length) => length === 1).length;
-  const singleCharRatio = singleCharCount / words.length;
-
-  const shortWordCount = alnumLengths.filter(
-    (length) => length > 0 && length <= SHORT_WORD_MAX_LENGTH,
-  ).length;
-  const shortWordRatio = shortWordCount / words.length;
-
-  const substantialWordCount = alnumLengths.filter(
-    (length) => length >= SUBSTANTIAL_WORD_MIN_LENGTH,
-  ).length;
-  const substantialWordRatio = substantialWordCount / words.length;
-
-  const totalAlnumLength = alnumLengths.reduce((sum, length) => sum + length, 0);
-  const avgWordLength = totalAlnumLength / words.length;
-
-  const alphanumericCount = (trimmed.match(/[a-zA-Z0-9]/g) ?? []).length;
-  const symbolRatio = 1 - alphanumericCount / trimmed.length;
-
-  const weirdCharCount = (
-    trimmed.match(/[^\x20-\x7E\u00A0-\u024F\u1E00-\u1EFF\s]/g) ?? []
-  ).length;
-  const weirdCharRatio = weirdCharCount / trimmed.length;
-
-  const tokenFrequency = new Map<string, number>();
-
-  for (const word of words) {
-    const key = word.toLowerCase();
-    tokenFrequency.set(key, (tokenFrequency.get(key) ?? 0) + 1);
-  }
-
-  let maxTokenCount = 0;
-
-  for (const count of tokenFrequency.values()) {
-    if (count > maxTokenCount) {
-      maxTokenCount = count;
-    }
-  }
-
-  const dominantTokenRatio = maxTokenCount / words.length;
-  const hasRepeatedGarbagePattern =
-    words.length >= MIN_WORDS_FOR_PATTERN_CHECK &&
-    dominantTokenRatio > DOMINANT_TOKEN_RATIO_THRESHOLD;
-
-  // Each signal below is individually weak — real documents can trip any
-  // single one (e.g. an ID has short tokens, an invoice has symbols) — so
-  // only text that trips several of them at once is treated as garbage.
-  let garbageSignals = 0;
-
-  if (meaningfulRatio < MEANINGFUL_WORD_RATIO_THRESHOLD) garbageSignals++;
-  if (singleCharRatio > SINGLE_CHAR_WORD_RATIO_THRESHOLD) garbageSignals++;
-  if (shortWordRatio > SHORT_WORD_RATIO_THRESHOLD) garbageSignals++;
-  if (avgWordLength < AVG_WORD_LENGTH_THRESHOLD) garbageSignals++;
-  if (substantialWordRatio < SUBSTANTIAL_WORD_RATIO_THRESHOLD) garbageSignals++;
-  if (symbolRatio > MAX_SYMBOL_RATIO) garbageSignals++;
-  if (weirdCharRatio > WEIRD_CHAR_RATIO_THRESHOLD) garbageSignals++;
-  if (hasRepeatedGarbagePattern) garbageSignals++;
-
-  if (garbageSignals >= GARBAGE_SIGNAL_THRESHOLD) {
-    return "failure";
-  }
-
-  return "ok";
-}
+// Reliability validation (confidence scoring, meaningful-word ratio, symbol
+// ratio, repeated-pattern detection, etc.) now happens inside
+// recognizeText() itself, since it has access to Tesseract's own confidence
+// data as well as the recognized text. recognizeText() returns "" for any
+// image/page it can't reliably read — whether that's because nothing was
+// found or because what it found looks like garbage — so this component
+// only needs to branch on empty vs. non-empty text.
 
 export default function UploadCard() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -362,15 +247,8 @@ export default function UploadCard() {
         setProgress(1);
         reachedComplete = true;
 
-        const classification = classifyOcrText(text);
-
-        if (classification === "empty") {
+        if (!text) {
           setOcrText(EMPTY_RESULT_MESSAGE);
-          return;
-        }
-
-        if (classification === "failure") {
-          alert(OCR_ERROR_MESSAGE);
           return;
         }
 
@@ -384,36 +262,33 @@ export default function UploadCard() {
       const pageImages = await renderAllPdfPages(selectedFile);
       const totalPages = pageImages.length;
 
-      let finalText = "";
-      let rawText = "";
+      const acceptedPages: string[] = [];
 
       for (let i = 0; i < totalPages; i++) {
         const pageText = await recognizeText(pageImages[i], (pageProgress) => {
           setProgress((i + pageProgress) / totalPages);
         });
 
-        rawText += pageText;
+        // recognizeText() already ran each page through the OCR decision
+        // engine — an unreliable page comes back as "". Skip it entirely
+        // rather than inserting an empty section, so one garbage page
+        // can't pollute the rest of the document.
+        if (!pageText) {
+          continue;
+        }
 
-        finalText += `\n\n## Page ${i + 1}\n\n`;
-        finalText += pageText;
+        acceptedPages.push(`## Page ${i + 1}\n\n${pageText}`);
       }
 
       setProgress(1);
       reachedComplete = true;
 
-      const classification = classifyOcrText(rawText);
-
-      if (classification === "empty") {
+      if (acceptedPages.length === 0) {
         setOcrText(EMPTY_RESULT_MESSAGE);
         return;
       }
 
-      if (classification === "failure") {
-        alert(OCR_ERROR_MESSAGE);
-        return;
-      }
-
-      setOcrText(finalText.trim());
+      setOcrText(acceptedPages.join("\n\n"));
     } catch (error) {
       console.error(error);
 
