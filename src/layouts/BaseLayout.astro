@@ -107,15 +107,24 @@ const organizationSchema = JSON.stringify({
 
     <meta name="twitter:image" content={ogImage} />
 
-    <script
-      type="application/ld+json"
-      set:html={webAppSchema}
+    <script type="application/ld+json" set:html={webAppSchema} />
+
+    <script type="application/ld+json" set:html={organizationSchema} />
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-F1Z92V4CLT"
     ></script>
 
-    <script
-      type="application/ld+json"
-      set:html={organizationSchema}
-    ></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag(...args) {
+        window.dataLayer.push(args);
+      }
+
+      gtag("js", new Date());
+
+      gtag("config", "G-F1Z92V4CLT");
+    </script>
   </head>
 
   <body
