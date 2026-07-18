@@ -117,13 +117,16 @@ const organizationSchema = JSON.stringify({
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
 
-      function gtag(...args) {
-        window.dataLayer.push(args);
+      function gtag() {
+        dataLayer.push(arguments);
       }
 
       gtag("js", new Date());
 
-      gtag("config", "G-F1Z92V4CLT");
+      gtag("config", "G-F1Z92V4CLT", {
+        send_page_view: true,
+        debug_mode: true,
+      });
     </script>
   </head>
 
