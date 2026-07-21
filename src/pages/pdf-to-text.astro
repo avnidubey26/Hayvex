@@ -1,0 +1,103 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import HowItWorks from "../components/HowItWorks.astro";
+import SupportedFormats from "../components/SupportedFormats.astro";
+import PdfGuide from "../components/PdfGuide.astro";
+import PdfFeatures from "../components/PdfFeatures.astro";
+import PdfFAQ from "../components/PdfFAQ.astro";
+import RelatedTools from "../components/RelatedTools.astro";
+import Footer from "../components/Footer.astro";
+
+---
+
+<BaseLayout
+    title="Free PDF to Text Converter | Hayvex"
+    description="Extract editable text from PDF documents instantly using AI-powered OCR. Secure, browser-based and completely free."
+>
+    <Navbar />
+
+    <main>
+        <Hero
+            title="PDF to Text"
+            highlight="Converter"
+            description="Extract editable text from scanned and image-based PDF documents directly in your browser. Hayvex keeps your files private while delivering fast and accurate OCR."
+            pills={["PDF OCR", "Browser Based", "Privacy First", "Free OCR"]}
+            bottomText="No signup required • Browser Processing • Your PDFs never leave your device"
+        />
+
+        <HowItWorks
+            title="How PDF to Text Works"
+            description="Convert scanned PDF documents into editable text in just a few simple steps."
+            steps={[
+                {
+                    title: "Upload Your PDF",
+                    description:
+                        "Select a scanned or image-based PDF directly from your device.",
+                },
+                {
+                    title: "OCR Processing",
+                    description:
+                        "Hayvex analyzes every page and detects printed text using OCR.",
+                },
+                {
+                    title: "Copy or Download",
+                    description:
+                        "Copy the extracted text or use it in your documents and workflows.",
+                },
+            ]}
+        />
+
+        <SupportedFormats
+            title="Supported PDF Types"
+            description="Hayvex supports different kinds of PDF documents for OCR."
+            formats={[
+                {
+                    extension: "PDF",
+                    title: "Scanned PDFs",
+                    description:
+                        "Extract text from scanned paper documents saved as PDF.",
+                },
+                {
+                    extension: "PDF",
+                    title: "Image PDFs",
+                    description: "Recognize text from image-based PDF files.",
+                },
+                {
+                    extension: "PDF",
+                    title: "Reports",
+                    description: "Convert printed reports into editable text.",
+                },
+                {
+                    extension: "PDF",
+                    title: "Books",
+                    description:
+                        "Digitize books and study material stored as PDFs.",
+                },
+                {
+                    extension: "PDF",
+                    title: "Invoices",
+                    description:
+                        "Extract invoice text for faster business workflows.",
+                },
+                {
+                    extension: "PDF",
+                    title: "Forms",
+                    description:
+                        "Convert printed forms into searchable digital text.",
+                },
+            ]}
+        />
+
+        <PdfGuide />
+
+        <PdfFeatures />
+
+        <PdfFAQ />
+
+        <RelatedTools />
+    </main>
+
+    <Footer />
+</BaseLayout>

@@ -1,0 +1,104 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+
+interface Tool {
+  title: string;
+  href: string;
+  description: string;
+  available?: boolean;
+}
+
+interface Props {
+  title?: string;
+  description?: string;
+  tools?: Tool[];
+}
+
+const {
+  title = "Related OCR Tools",
+  description =
+    "Explore more OCR tools from Hayvex to extract text from different document and image formats.",
+  tools = [
+    {
+      title: "Image to Text",
+      href: "/image-to-text",
+      description:
+        "Extract editable text from JPG, PNG, JPEG and WEBP images instantly.",
+      available: true,
+    },
+    {
+      title: "PDF to Text",
+      href: "#",
+      description:
+        "Convert scanned PDF documents into editable text with AI OCR.",
+      available: false,
+    },
+    {
+      title: "JPG to Text",
+      href: "#",
+      description:
+        "Recognize and extract text from JPG images with high accuracy.",
+      available: false,
+    },
+    {
+      title: "PNG to Text",
+      href: "#",
+      description:
+        "Extract text from PNG screenshots, graphics and transparent images.",
+      available: false,
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+  <SectionHeader
+    badge="EXPLORE MORE"
+    title={title}
+    description={description}
+  />
+
+  <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      tools.map((tool) => (
+        <a
+          href={tool.available ? tool.href : "#"}
+          class={`group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition duration-300 ${
+            tool.available
+              ? "hover:border-[#D4AF37]/30 hover:bg-white/[0.05]"
+              : "cursor-default opacity-70"
+          }`}
+        >
+          <div class="flex items-start justify-between gap-4">
+            <h3 class="text-lg font-semibold text-white group-hover:text-[#F4D56A] transition-colors">
+              {tool.title}
+            </h3>
+
+            <span
+              class={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+                tool.available
+                  ? "bg-[#D4AF37]/15 text-[#F4D56A]"
+                  : "bg-white/5 text-zinc-500"
+              }`}
+            >
+              {tool.available ? "Available" : "Coming Soon"}
+            </span>
+          </div>
+
+          <p class="mt-4 flex-1 text-sm leading-6 text-zinc-400">
+            {tool.description}
+          </p>
+
+          {
+            tool.available && (
+              <div class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#D4AF37]">
+                Try Now
+                <span aria-hidden="true">→</span>
+              </div>
+            )
+          }
+        </a>
+      ))
+    }
+  </div>
+</section>
