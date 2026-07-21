@@ -1,0 +1,83 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+
+interface Format {
+  extension: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  title?: string;
+  description?: string;
+  formats?: Format[];
+}
+
+const {
+  title = "Supported Image Formats",
+  description =
+    "Hayvex supports the most popular image formats for fast and accurate text extraction directly inside your browser.",
+  formats = [
+    {
+      extension: "JPG",
+      title: "JPG Images",
+      description: "Extract text from standard JPG photographs instantly.",
+    },
+    {
+      extension: "PNG",
+      title: "PNG Images",
+      description: "OCR for screenshots, graphics and transparent PNG files.",
+    },
+    {
+      extension: "JPEG",
+      title: "JPEG Images",
+      description: "Recognize printed text from JPEG images with high accuracy.",
+    },
+    {
+      extension: "WEBP",
+      title: "WEBP Images",
+      description: "Modern WEBP image support with browser-based OCR.",
+    },
+    {
+      extension: "BMP",
+      title: "BMP Images",
+      description: "Extract editable text from Bitmap image files.",
+    },
+    {
+      extension: "TIFF",
+      title: "TIFF Images",
+      description: "OCR support for scanned TIFF documents and images.",
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+  <SectionHeader
+    badge="SUPPORTED FORMATS"
+    title={title}
+    description={description}
+  />
+
+  <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      formats.map((format) => (
+        <div
+          class="rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition duration-300 hover:border-[#D4AF37]/30 hover:bg-white/[0.05]"
+        >
+          <div class="inline-flex rounded-lg bg-[#D4AF37]/10 px-4 py-2 text-sm font-bold tracking-wide text-[#D4AF37]">
+            {format.extension}
+          </div>
+
+          <h3 class="mt-5 text-lg font-semibold text-white">
+            {format.title}
+          </h3>
+
+          <p class="mt-3 leading-7 text-zinc-400">
+            {format.description}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</section>

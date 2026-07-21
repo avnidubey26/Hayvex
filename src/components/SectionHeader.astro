@@ -1,0 +1,48 @@
+---
+interface Props {
+  badge: string;
+  title: string;
+  highlight?: string;
+  suffix?: string;
+  description: string;
+}
+
+const {
+  badge,
+  title,
+  highlight = "",
+  suffix = "",
+  description,
+} = Astro.props;
+---
+
+<div class="mx-auto max-w-3xl text-center">
+  <span
+    class="inline-flex rounded-full border border-[#D4AF37]/25 bg-[#D4AF37]/10 px-4 py-1.5 text-xs font-medium tracking-wide text-[#F4D56A]"
+  >
+    {badge}
+  </span>
+
+  <h2 class="mt-5 text-3xl font-bold tracking-tight text-white md:text-4xl">
+    {title}
+
+    {
+      highlight && (
+        <>
+          {" "}
+          <span
+            class="bg-gradient-to-r from-[#FFE89B] via-[#D4AF37] to-[#A97A14] bg-clip-text text-transparent"
+          >
+            {highlight}
+          </span>
+        </>
+      )
+    }
+
+    {suffix && <> {suffix}</>}
+  </h2>
+
+  <p class="mx-auto mt-4 max-w-2xl text-base leading-7 text-zinc-400">
+    {description}
+  </p>
+</div>

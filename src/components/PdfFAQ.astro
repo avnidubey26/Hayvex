@@ -1,0 +1,96 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  title?: string;
+  description?: string;
+  faqs?: FAQ[];
+}
+
+const {
+  title = "Frequently Asked Questions",
+  description =
+    "Everything you need to know about converting PDF documents into editable text using Hayvex.",
+  faqs = [
+    {
+      question: "How do I convert a PDF to text?",
+      answer:
+        "Upload your scanned or image-based PDF to Hayvex. Our OCR engine detects the text and converts it into editable text directly inside your browser.",
+    },
+    {
+      question: "Does Hayvex upload my PDF files?",
+      answer:
+        "No. Hayvex is designed with privacy in mind. OCR processing happens locally in your browser whenever possible, so your documents remain under your control.",
+    },
+    {
+      question: "Can Hayvex read scanned PDFs?",
+      answer:
+        "Yes. Hayvex is specifically designed to extract text from scanned and image-based PDF documents using OCR technology.",
+    },
+    {
+      question: "Can I extract text from multi-page PDFs?",
+      answer:
+        "Yes. Hayvex supports multi-page PDF OCR, allowing text extraction from every page of your document.",
+    },
+    {
+      question: "Is PDF OCR free?",
+      answer:
+        "Yes. Hayvex offers free browser-based PDF OCR for supported documents without requiring an account.",
+    },
+    {
+      question: "Which PDF documents work best?",
+      answer:
+        "High-resolution scanned PDFs with clear printed text provide the most accurate OCR results.",
+    },
+    {
+      question: "Can I edit the extracted text?",
+      answer:
+        "Yes. Once OCR is complete, the extracted text can be copied, edited and used in other applications.",
+    },
+    {
+      question: "Does Hayvex support handwritten PDFs?",
+      answer:
+        "Handwritten OCR support is currently limited. Hayvex provides the best results with printed documents.",
+    },
+    {
+      question: "Which browsers are supported?",
+      answer:
+        "Hayvex works in modern browsers including Chrome, Edge, Firefox and Safari.",
+    },
+    {
+      question: "Is my document secure?",
+      answer:
+        "Yes. Privacy is one of Hayvex's core principles. Your documents stay on your device during browser-based processing whenever possible.",
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="mx-auto max-w-5xl px-6 py-20 lg:px-8">
+  <SectionHeader
+    badge="FAQ"
+    title={title}
+    description={description}
+  />
+
+  <div class="mt-14 space-y-6">
+    {
+      faqs.map((faq) => (
+        <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+          <h3 class="text-lg font-semibold text-white">
+            {faq.question}
+          </h3>
+
+          <p class="mt-3 leading-7 text-zinc-400">
+            {faq.answer}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</section>

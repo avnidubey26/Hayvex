@@ -1,0 +1,104 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  title?: string;
+  description?: string;
+  faqs?: FAQ[];
+}
+
+const {
+  title = "Frequently Asked Questions",
+  description =
+    "Everything you need to know about extracting text from images using Hayvex.",
+  faqs = [
+    {
+      question: "How do I extract text from an image?",
+      answer:
+        "Upload your JPG, PNG, JPEG or WEBP image to Hayvex. Our browser-based OCR instantly recognizes the text and lets you copy or download it.",
+    },
+    {
+      question: "Does Hayvex upload my images?",
+      answer:
+        "No. Hayvex processes your files directly inside your browser. Your images never leave your device, ensuring complete privacy.",
+    },
+    {
+      question: "Which image formats are supported?",
+      answer:
+        "Hayvex currently supports JPG, JPEG, PNG, WEBP, BMP and TIFF image formats.",
+    },
+    {
+      question: "Can I extract text from screenshots?",
+      answer:
+        "Yes. Screenshots are fully supported. Simply upload the screenshot and Hayvex will detect and extract the text automatically.",
+    },
+    {
+      question: "Can I convert JPG to text?",
+      answer:
+        "Yes. Hayvex can accurately convert JPG images into editable text in just a few seconds.",
+    },
+    {
+      question: "Can I convert PNG to text?",
+      answer:
+        "Yes. PNG files are fully supported, including transparent PNG images and screenshots.",
+    },
+    {
+      question: "Is Hayvex free to use?",
+      answer:
+        "Yes. The current version of Hayvex is completely free and requires no sign-up.",
+    },
+    {
+      question: "Is browser-based OCR safe?",
+      answer:
+        "Yes. Since all OCR processing happens locally in your browser, your documents remain private and secure.",
+    },
+    {
+      question: "Can Hayvex recognize handwritten text?",
+      answer:
+        "Hayvex performs best with printed text. Recognition of handwritten text depends on image quality and handwriting clarity.",
+    },
+    {
+      question: "What languages does Hayvex support?",
+      answer:
+        "Hayvex currently focuses on English OCR, with support for additional languages planned in future updates.",
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="mx-auto max-w-5xl px-6 py-20 lg:px-8">
+  <SectionHeader
+    badge="FAQ"
+    title={title}
+    description={description}
+  />
+
+  <div class="mt-14 space-y-4">
+    {
+      faqs.map((faq) => (
+        <details
+          class="group rounded-2xl border border-white/10 bg-white/[0.03] transition hover:border-[#D4AF37]/30"
+        >
+          <summary class="cursor-pointer list-none px-6 py-5 text-left font-semibold text-white">
+            <div class="flex items-center justify-between gap-4">
+              <span>{faq.question}</span>
+
+              <span class="text-[#D4AF37] transition group-open:rotate-45">
+                +
+              </span>
+            </div>
+          </summary>
+
+          <div class="px-6 pb-6 text-zinc-400 leading-7">
+            {faq.answer}
+          </div>
+        </details>
+      ))
+    }
+  </div>
+</section>

@@ -1,0 +1,87 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+
+interface Feature {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+interface Props {
+  title?: string;
+  description?: string;
+  features?: Feature[];
+}
+
+const {
+  title = "Why Use Image to Text?",
+  description =
+    "Image OCR helps you save time, improve productivity and convert printed content into editable text within seconds.",
+  features = [
+    {
+      icon: "⚡",
+      title: "Instant Text Extraction",
+      description:
+        "Convert text from images within seconds without manually typing documents.",
+    },
+    {
+      icon: "🔒",
+      title: "100% Private Processing",
+      description:
+        "All OCR runs locally inside your browser. Your files never leave your device.",
+    },
+    {
+      icon: "📸",
+      title: "Screenshot OCR",
+      description:
+        "Extract text from screenshots, UI mockups, chats and presentations effortlessly.",
+    },
+    {
+      icon: "📚",
+      title: "Digitize Documents",
+      description:
+        "Turn printed notes, books and study material into editable digital text.",
+    },
+    {
+      icon: "💼",
+      title: "Business Productivity",
+      description:
+        "Extract information from reports, invoices and printed documents faster.",
+    },
+    {
+      icon: "🌍",
+      title: "Works Everywhere",
+      description:
+        "Use Hayvex on Chrome, Edge, Firefox and Safari without installing any software.",
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+  <SectionHeader
+    badge="BENEFITS"
+    title={title}
+    description={description}
+  />
+
+  <div class="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    {
+      features.map((feature) => (
+        <div
+          class="rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition duration-300 hover:border-[#D4AF37]/30 hover:bg-white/[0.05]"
+        >
+          <div class="text-3xl">{feature.icon}</div>
+
+          <h3 class="mt-5 text-xl font-semibold text-white">
+            {feature.title}
+          </h3>
+
+          <p class="mt-3 leading-7 text-zinc-400">
+            {feature.description}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</section>

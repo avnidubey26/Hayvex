@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import HowItWorks from "../components/HowItWorks.astro";
+import SupportedFormats from "../components/SupportedFormats.astro";
+import ImageGuide from "../components/ImageGuide.astro";
+import ImageFeatures from "../components/ImageFeatures.astro";
+import ImageFAQ from "../components/ImageFAQ.astro";
+import RelatedTools from "../components/RelatedTools.astro";
+import Footer from "../components/Footer.astro";
+
+---
+
+<BaseLayout
+  title="Free Image to Text Converter | Hayvex"
+  description="Extract editable text from JPG, PNG, JPEG and WEBP images instantly using AI-powered OCR. Free, private and browser-based."
+>
+  <Navbar />
+
+  <main>
+    <Hero
+      title="Image to Text"
+      highlight="Converter"
+      description="Extract editable text from JPG, PNG, JPEG and WEBP images instantly using AI-powered OCR. Everything runs securely inside your browser, so your images never leave your device."
+      pills={["Image OCR", "Privacy First", "Browser Based", "Free OCR"]}
+      bottomText="No signup required • 100% Browser Processing • Your images never leave your device"
+    />
+
+
+    <HowItWorks />
+
+    <SupportedFormats />
+
+    <ImageGuide />
+
+    <ImageFeatures />
+
+    <ImageFAQ />
+
+    <RelatedTools />
+  </main>
+
+  <Footer />
+</BaseLayout>

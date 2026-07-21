@@ -1,9 +1,32 @@
 ---
 import UploadCard from "./UploadCard";
+
+interface Props {
+  title?: string;
+  highlight?: string;
+  description?: string;
+  pills?: string[];
+  bottomText?: string;
+}
+
+const {
+  title = "Extract Text",
+  highlight = "from Images & PDFs",
+  description =
+    "Extract text instantly from images and PDF files using AI-powered OCR. Everything runs securely inside your browser, so your documents never leave your device.",
+  pills = [
+    "Privacy First",
+    "AI OCR",
+    "PDF OCR",
+    "Image to Text",
+  ],
+  bottomText =
+    "No signup required • 100% Browser Processing • Your files never leave your device",
+} = Astro.props;
 ---
 
 <section class="relative text-white">
-  <!-- Hero-specific accent glow (layered on top of the global BackgroundFX) -->
+  <!-- Hero-specific accent glow -->
 
   <div
     class="pointer-events-none absolute left-1/2 top-10 h-[420px] w-[640px] -translate-x-1/2 rounded-full bg-[#D4AF37]/[0.06] blur-[140px]"
@@ -21,62 +44,45 @@ import UploadCard from "./UploadCard";
       <h1
         class="mt-0 max-w-3xl text-4xl font-black leading-[1.1] tracking-tight text-white sm:text-5xl md:text-[3.25rem] lg:text-6xl"
       >
-        Extract Text
+        {title}
 
         <span
           class="block bg-gradient-to-r from-[#F2D27A] via-[#D4AF37] to-[#B8860B] bg-clip-text text-transparent [filter:drop-shadow(0_0_28px_rgba(212,175,55,0.25))]"
         >
-          from Images &amp; PDFs
+          {highlight}
         </span>
       </h1>
 
       <!-- Description -->
 
       <p class="mt-5 max-w-2xl text-sm leading-7 text-zinc-400 sm:text-base">
-        Extract text instantly from images and PDF files using AI-powered OCR.
-        Everything runs securely inside your browser, so your documents never
-        leave your device.
+        {description}
       </p>
 
       <!-- Upload Card -->
 
-      <div id="upload" class="mt-7 w-full max-w-[660px] scroll-mt-24">
+      <div id="upload" class="mt-8 w-full max-w-[660px] scroll-mt-24">
         <UploadCard client:load />
       </div>
 
       <!-- Feature Pills -->
 
-      <div class="mt-6 flex flex-wrap justify-center gap-2">
-        <span
-          class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:border-[#D4AF37]/30 hover:text-white"
-        >
-          Privacy First
-        </span>
-
-        <span
-          class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:border-[#D4AF37]/30 hover:text-white"
-        >
-          AI OCR
-        </span>
-
-        <span
-          class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:border-[#D4AF37]/30 hover:text-white"
-        >
-          PDF OCR
-        </span>
-
-        <span
-          class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:border-[#D4AF37]/30 hover:text-white"
-        >
-          Image to Text
-        </span>
+      <div class="mt-8 flex flex-wrap justify-center gap-2">
+        {
+          pills.map((pill) => (
+            <span
+              class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:border-[#D4AF37]/30 hover:text-white"
+            >
+              {pill}
+            </span>
+          ))
+        }
       </div>
 
       <!-- Bottom Text -->
 
       <p class="mt-5 text-[11px] tracking-wide text-zinc-500">
-        No signup required • 100% Browser Processing • Your files never leave
-        your device
+        {bottomText}
       </p>
     </div>
   </div>
