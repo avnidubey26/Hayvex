@@ -21,14 +21,31 @@
 
 ## 🛠 Tech Stack
 
-## 🛠 Tech Stack
+| Category | Technology |
+|----------|------------|
+| Framework | Astro 7 |
+| UI | Preact |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| OCR Engine | Tesseract.js |
+| PDF Rendering | PDF.js |
+| Deployment | Hostinger |
+| Analytics | Google Analytics |
+| SEO | Google Search Console + Bing Webmaster |
 
-- **Framework:** Astro 7
-- **UI:** Preact
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS
-- **OCR Engine:** Tesseract.js
-- **PDF Rendering:** PDF.js
-- **Deployment:** Hostinger
-- **Analytics:** Google Analytics
-- **SEO:** Google Search Console & Bing Webmaster Tools
+---
+
+## 📁 Project Structure
+
+```text
+Hayvex/
+├── public/
+├── src/
+│   ├── components/
+│   ├── layouts/
+│   ├── lib/
+│   └── pages/
+├── astro.config.mjs
+├── package.json
+└── README.md
+```
