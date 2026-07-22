@@ -1,46 +1,34 @@
-# Astro Starter Kit: Basics
+# Hayvex
 
-```sh
-npm create astro@latest -- --template basics
-```
+> Privacy-first AI OCR platform that extracts text from images and PDFs directly in your browser.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+🌐 **Live Demo:** https://hayvex.vaikva.com
 
-## 🚀 Project Structure
+---
 
-Inside of your Astro project, you'll see the following folders and files:
+## ✨ Features
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+- 🖼️ Image OCR (JPG, PNG, JPEG, WEBP)
+- 📄 PDF OCR
+- 🔒 100% Browser Processing (Privacy First)
+- 📋 Copy Extracted Text
+- 💾 Download TXT
+- 📱 Responsive Design
+- ⚡ Fast OCR
+- 🔍 SEO Optimized
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+---
 
-## 🧞 Commands
+## 🛠 Tech Stack
 
-All commands are run from the root of the project, from a terminal:
+## 🛠 Tech Stack
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- **Framework:** Astro 7
+- **UI:** Preact
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **OCR Engine:** Tesseract.js
+- **PDF Rendering:** PDF.js
+- **Deployment:** Hostinger
+- **Analytics:** Google Analytics
+- **SEO:** Google Search Console & Bing Webmaster Tools
